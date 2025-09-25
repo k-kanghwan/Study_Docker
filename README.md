@@ -42,6 +42,10 @@
     - [쉘 종류](#쉘-종류)
     - [다양한 명령어](#다양한-명령어)
     - [chmod : 파일 권한 변경](#chmod--파일-권한-변경)
+    - [리눅스 쉘 사용법 이해(리다이렉션/파이프)](#리눅스-쉘-사용법-이해리다이렉션파이프)
+      - [Standard Streams](#standard-streams)
+      - [리다이렉션(Redirection)](#리다이렉션redirection)
+      - [파이프(Pipe)](#파이프pipe)
 
 ---
 ## Section1. 도커 강의 소개
@@ -135,6 +139,7 @@
 - Bourne-Again Shell (bash): GNU 프로젝트의 일환으로 개발된 유닉스 셸
 
 ### 다양한 명령어 
+> 리눅스에는 휴지통이 없음. 삭제 시 복구 불가. 주의!! ⚠️
 1. `whoami`: 현재 사용자의 이름을 출력 
     - root: 최고 관리자
 2. `sudo`: superuser do 
@@ -153,6 +158,7 @@
     - 디렉토리 생성(하위 포함): `mkdir -p dir/subdir`
     - 파일 삭제: `rm file.txt`
     - 디렉토리/재귀 삭제: `rm -rf dir/`
+        - `-r`: 재귀, `-f`: 강제
 7. `cp`, `mv`
     - 파일/폴더 복사: `cp src dst`, 디렉토리 복사: `cp -r src/ dst/`
     - 이동/이름 변경: `mv old new`
@@ -161,9 +167,16 @@
     - 페이지 단위 보기: `less file.txt` (종료: q)
     - 앞 N줄: `head -n 20 file.txt`
     - 마지막 N줄/실시간: `tail -n 100 -f file.txt`
-9. `grep`, `find`: 검색
+9. `grep`, `find`: **검색**
     - 텍스트 검색: `grep -n "pattern" file.txt`
     - 디렉토리 전체 검색: `grep -R "pattern" .`
+        - <option>
+            - `-i`: 대소문자 무시
+            - `-v`: 패턴과 일치하지 않는 라인 출력
+            - `-c`: 일치하는 라인 수 출력
+            - `-l`: 일치하는 파일 이름 출력
+            - `-c`: 일치하는 라인 수 출력
+            - `-n`: 일치하는 라인 번호 출력
     - 파일 찾기: `find . -type f -name "*.log"`
 10. `chmod`, `chown`: 권한/소유자
     - 권한 변경: `chmod 644 file.txt`, 실행권한 추가: `chmod +x script.sh`
@@ -173,7 +186,7 @@
     - 폴더별 용량: `du -sh ./*`
     - 메모리 사용량: `free -h` (Ubuntu 등)
 12. `ps`, `top`, `kill`: 프로세스
-    - 프로세스 목록: `ps aux | grep name`
+    - 프로세스 목록: `ps aux | grep bash`
     - 실시간 모니터링: `top` (또는 `htop` 설치 시)
     - 종료: `kill PID`, 강제 종료: `kill -9 PID`
 13. `systemctl`/`service`: 서비스 관리
@@ -215,3 +228,39 @@
 - 읽기(r)=4, 쓰기(w)=2, 실행(x)=1
 - 소유자, 그룹, 기타 사용자 순서로 합산
 - 예시: `chmod 755 file.sh` (소유자 rwx(7), 그룹 rx(5), 기타 rx(5))
+
+### 리눅스 쉘 사용법 이해(리다이렉션/파이프)
+#### Standard Streams 
+- 표준 입력(Standard Input, **stdin**, 0): 키보드 입력
+- 표준 출력(Standard Output, **stdout**, 1): 화면 출력
+- 표준 에러(Standard Error, **stderr**, 2): 에러 메시지 출력
+
+#### 리다이렉션(Redirection)
+- 표준 스트림 흐름 변경
+    <p style="text-align: left;">
+        <img width="400" height="" src="img/linux-redirection.png">
+    </p>
+
+- `>`: 표준 출력 리다이렉션 (덮어쓰기)
+    - 예시: `command > file.txt` (출력 내용을 file.txt에 저장)
+- `>>`: 표준 출력 리다이렉션 (추가쓰기)
+    - 예시: `command >> file.txt` (출력 내용을 file.txt에 추가)
+- `2>`: 표준 에러 리다이렉션 (덮어쓰기)
+    - 예시: `command 2> error.txt` (에러 메시지를 error.txt에 저장)
+- `2>>`: 표준 에러 리다이렉션 (추가쓰기)
+    - 예시: `command 2>> error.txt` (에러 메시지를 error.txt에 추가)
+
+#### 파이프(Pipe) 
+- `|`: 한 명령어의 출력을 다음 명령어의 입력으로 연결
+    - 예시: `command1 | command2` (command1의 출력을 command2의 입력으로 사용)
+
+
+
+
+
+
+
+
+
+
+

@@ -41,6 +41,7 @@
     - [리눅스와 파일](#리눅스와-파일)
     - [쉘 종류](#쉘-종류)
     - [다양한 명령어](#다양한-명령어)
+    - [chmod : 파일 권한 변경](#chmod--파일-권한-변경)
 
 ---
 ## Section1. 도커 강의 소개
@@ -136,7 +137,81 @@
 ### 다양한 명령어 
 1. `whoami`: 현재 사용자의 이름을 출력 
     - root: 최고 관리자
-2. sudo : superuser do 
+2. `sudo`: superuser do 
     - root 권한으로 명령어 실행
     - 사용 예시: `sudo apt-get update`
+3. `pwd`: 현재 작업 중인 디렉토리 경로 확인
+4. `ls`: 파일/디렉토리 목록 보기
+    - 숨김 포함: `ls -la`
+    - 한 줄 출력: `ls -1`
+    - 재귀 목록: `ls -R`
+5. `cd`: 디렉토리 이동
+    - 상위로: `cd ..`
+    - 홈으로: `cd ~`
+6. `touch`, `mkdir`, `rm`
+    - 파일 생성: `touch file.txt`
+    - 디렉토리 생성(하위 포함): `mkdir -p dir/subdir`
+    - 파일 삭제: `rm file.txt`
+    - 디렉토리/재귀 삭제: `rm -rf dir/`
+7. `cp`, `mv`
+    - 파일/폴더 복사: `cp src dst`, 디렉토리 복사: `cp -r src/ dst/`
+    - 이동/이름 변경: `mv old new`
+8. `cat`, `less`, `head`, `tail`
+    - 내용 전체 보기: `cat file.txt`
+    - 페이지 단위 보기: `less file.txt` (종료: q)
+    - 앞 N줄: `head -n 20 file.txt`
+    - 마지막 N줄/실시간: `tail -n 100 -f file.txt`
+9. `grep`, `find`: 검색
+    - 텍스트 검색: `grep -n "pattern" file.txt`
+    - 디렉토리 전체 검색: `grep -R "pattern" .`
+    - 파일 찾기: `find . -type f -name "*.log"`
+10. `chmod`, `chown`: 권한/소유자
+    - 권한 변경: `chmod 644 file.txt`, 실행권한 추가: `chmod +x script.sh`
+    - 소유자 변경: `sudo chown user:group file.txt`
+11. `df`, `du`, `free`: 디스크/메모리
+    - 디스크 사용량: `df -h`
+    - 폴더별 용량: `du -sh ./*`
+    - 메모리 사용량: `free -h` (Ubuntu 등)
+12. `ps`, `top`, `kill`: 프로세스
+    - 프로세스 목록: `ps aux | grep name`
+    - 실시간 모니터링: `top` (또는 `htop` 설치 시)
+    - 종료: `kill PID`, 강제 종료: `kill -9 PID`
+13. `systemctl`/`service`: 서비스 관리
+    - 상태 확인: `sudo systemctl status docker`
+    - 시작/중지/재시작: `sudo systemctl start|stop|restart docker`
+14. 네트워크 관련
+    - IP 확인: `ip a` (또는 `ifconfig`)
+    - 연결 확인: `ping -c 4 google.com`
+    - 포트/소켓: `ss -lntp` (또는 `netstat -lntp`)
+    - HTTP 확인: `curl -I http://localhost:80`
+15. 압축/아카이브
+    - 만들기: `tar -czf archive.tgz dir/`
+    - 풀기: `tar -xzf archive.tgz`
+    - zip/unzip: `zip -r archive.zip dir/`, `unzip archive.zip`
+16. 패키지 관리
+    - Debian/Ubuntu: `sudo apt update && sudo apt install <pkg>`
+    - RHEL/CentOS: `sudo yum install <pkg>` (또는 `dnf`)
+17. 사용자/그룹
+    - 현재 사용자 정보: `id`
+    - 사용자 추가: `sudo useradd -m <user>`
+    - 비밀번호 설정: `sudo passwd <user>`
+18. 시스템 정보
+    - 커널/OS: `uname -a`
+    - 배포판: `cat /etc/os-release`
+19. 환경변수/경로
+    - 확인: `echo $PATH`
+    - 설정(세션 한정): `export KEY=value`
+20. 리다이렉션/파이프
+    - 출력 저장: `command > out.txt`, 추가 저장: `command >> out.txt`
+    - 결과 연결: `command1 | command2`
+21. 파일 목록 추출/저장 팁
+    - 현재 디렉토리 파일만: `ls -1 > files.txt`
+    - 재귀적으로 전체 파일: `find . -type f > files.txt`
+    - 개수 세기: `find . -type f | wc -l`
 
+### chmod : 파일 권한 변경 
+<!-- 추가 예시 필요함.. -->
+- 숫자를 사용하는 방법 
+- 읽기(r)=4, 쓰기(w)=2, 실행(x)=1
+- 소유자, 그룹, 기타 사용자 순서로 합산
+- 예시: `chmod 755 file.sh` (소유자 rwx(7), 그룹 rx(5), 기타 rx(5))

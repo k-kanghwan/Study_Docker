@@ -53,6 +53,10 @@
       - [프로세스 중지](#프로세스-중지)
     - [리눅스 쉘 사용법 이해 - 하드링크와 소프트(심볼릭)링크](#리눅스-쉘-사용법-이해---하드링크와-소프트심볼릭링크)
       - [하드링크와 소프트링크](#하드링크와-소프트링크)
+    - [리눅스 쉘 사용법 이해 - 우분투 패키지 매니저](#리눅스-쉘-사용법-이해---우분투-패키지-매니저)
+      - [ubuntu 패키지 관리 실무](#ubuntu-패키지-관리-실무)
+    - [리눅스 쉘 사용법 이해 - VIM 사용법](#리눅스-쉘-사용법-이해---vim-사용법)
+      - [초간단 사용법](#초간단-사용법)
 
 ---
 ## Section1. 도커 강의 소개
@@ -331,12 +335,23 @@
             lrwxrwxrwx 1 user user 20 Oct 10 12:00 symlink.txt -> original.txt
             ```
 
+### 리눅스 쉘 사용법 이해 - 우분투 패키지 매니저
+#### ubuntu 패키지 관리 실무 
+- 패키지 인덱스 정보 업데이트
+    - `sudo apt-get update`
+- 패키지 업그레이드 ⬅️ 패키지 업그레이드는 완전 주의 필요 ⚠️
+    - `sudo apt-get upgrade`
+- 패키지 설치 
+    - `sudo apt-get install <package_name>`
+- 패키지 제거
+    - `sudo apt-get remove <package_name>`
+- 패키지 제거(설정 파일 포함)
+    - `sudo apt-get --purge remove <package_name>`
 
-
-
-
-
-
-
-
-
+### 리눅스 쉘 사용법 이해 - VIM 사용법
+#### 초간단 사용법 
+- 입력 : `i` (insert 모드)
+- 저장 : `:w` (write)
+- 종료 : `:q` (quit)
+- 강제 종료 : `:q!` (quit without saving)
+- 저장 후 종료 : `:wq` or `:x`

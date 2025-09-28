@@ -24,6 +24,10 @@
 
 
 # Docker 🐳
+> version info
+> ubuntu 24.04.3 LTS
+> docker 28.4.0
+> docker-compose v2.39.4
 
 ## Table of Contents
 - [Docker 🐳](#docker-)
@@ -57,6 +61,14 @@
       - [ubuntu 패키지 관리 실무](#ubuntu-패키지-관리-실무)
     - [리눅스 쉘 사용법 이해 - VIM 사용법](#리눅스-쉘-사용법-이해---vim-사용법)
       - [초간단 사용법](#초간단-사용법)
+  - [Section6. 리눅스, 맥, 윈도우에서의 도커 환경 구축](#section6-리눅스-맥-윈도우에서의-도커-환경-구축)
+    - [Mac / Windows Docker 설치](#mac--windows-docker-설치)
+      - [Mac 설치](#mac-설치)
+      - [Windows 설치(강의 Section6-16 참조)](#windows-설치강의-section6-16-참조)
+    - [Linux Docker 설치](#linux-docker-설치)
+      - [설치 방법](#설치-방법)
+      - [`sudo` 없이 사용하기](#sudo-없이-사용하기)
+    - [Docker compose 설치(Standalone)](#docker-compose-설치standalone)
 
 ---
 ## Section1. 도커 강의 소개
@@ -355,3 +367,48 @@
 - 종료 : `:q` (quit)
 - 강제 종료 : `:q!` (quit without saving)
 - 저장 후 종료 : `:wq` or `:x`
+
+## Section6. 리눅스, 맥, 윈도우에서의 도커 환경 구축
+### Mac / Windows Docker 설치
+#### Mac 설치  
+- `Docker for mac` 검색 후 설치 - 간단
+
+#### Windows 설치(강의 Section6-16 참조)
+> Windows 설치는 추천하지 않음
+- Dos 및 Hiper-v 기능 활성화 필요 
+- **Windows 10 Pro 이상에서만 가능**
+    - `Docker for Windows` 검색 후 설치 - 간단
+
+### Linux Docker 설치
+#### 설치 방법
+> 공식 페이지 참조 : [https://docs.docker.com/engine/install/ubuntu/](https://docs.docker.com/engine/install/ubuntu/ "Go to url")
+
+1. old version 삭제
+2. package 설치 
+3. 설치 완료되면 아래 명령어로 확인
+
+    ```bash 
+    sudo docker run hello-world
+    ```
+
+#### `sudo` 없이 사용하기   
+1. `sudo` 없이 사용하려면 아래 명령어로 현재 사용자에게 docker 그룹 권한 부여
+    ```bash
+    sudo usermod -aG docker $USER
+    ```
+    > 명령어 입력 후 터미널 재시작 필요
+
+
+2. `id -nG` 명령어로 현재 사용자가 속한 그룹 확인 가능
+    
+### Docker compose 설치(Standalone)
+> 설치방법 : [https://docs.docker.com/compose/install/standalone/](https://docs.docker.com/compose/install/standalone/ "Go to url")
+
+1. 다운로드
+    - `curl -SL https://github.com/docker/compose/releases/download/v2.39.4/docker-compose-linux-x86_64 -o /usr/local/bin/docker-compose`
+    - failed가 뜬다면 명령어 앞에 `sudo` 붙여서 실행
+        - `sudo curl -SL ...`
+2. 실행 권한 변경
+    ```bash
+    sudo chmod +x /usr/local/bin/docker-compose
+    ```

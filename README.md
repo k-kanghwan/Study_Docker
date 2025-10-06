@@ -473,7 +473,37 @@
     - `docker ps` : 실행 중인 컨테이너만 확인
     - `docker ps -a -q` : 컨테이너 ID만 출력
 
-3. 
+3. 컨테이너 실행
+    - `docker start <컨테이너ID or 이름>`
+
+4. **docker run** 명령 : 컨테이너 생성 후 실행
+    - `docker run <옵션> <이미지명>:<태그명>`
+    - 주요 옵션
+        - `-i`: interactive, 표준 입력 유지 
+        - `-t`: tty, 가상 터미널 할당
+        - `-it`: interactive + tty, 터미널 접속
+        - `--name`: 컨테이너 이름 지정
+        - `-d`: detached, 백그라운드 실행
+        - `--rm`: 컨테이너 종료 시 자동 삭제
+        - `-p`: 호스트와 컨테이너 포트를 연결하는 옵션
+        - `-v`: 호스트와 컨테이너 간 디렉토리/파일을 연결하는 옵션
+
+        > * pseudo tty?
+        > tty(teletypewriter): 리눅스(Unix)에서 터미널을 의미 
+
+    - 예시
+        - `docker run -it --name my_ubuntu ubuntu`
+        - `docker run -it --rm ubuntu` : 종료 시 컨테이너 자동 삭제
+        - `docker run -it -d --name my_ubuntu ubuntu` : 백그라운드 실행
+
+5. 컨테이너 접속 
+    - `docker exec -it <컨테이너ID or 이름> /bin/bash`
+    - `docker attach <컨테이너ID or 이름>` : 실행 중인 컨테이너에 연결
+
+
+
+
+
 
 
 

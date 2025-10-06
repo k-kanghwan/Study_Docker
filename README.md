@@ -69,6 +69,11 @@
       - [설치 방법](#설치-방법)
       - [`sudo` 없이 사용하기](#sudo-없이-사용하기)
     - [Docker compose 설치(Standalone)](#docker-compose-설치standalone)
+  - [Section7. docker 주요 명령 익히기](#section7-docker-주요-명령-익히기)
+    - [도커에 대한 기본 이해](#도커에-대한-기본-이해)
+    - [docker 이미지 기본](#docker-이미지-기본)
+    - [docker 주요 명령어 익히기](#docker-주요-명령어-익히기)
+    - [Docker Container 관련 주요 명령](#docker-container-관련-주요-명령)
 
 ---
 ## Section1. 도커 강의 소개
@@ -412,3 +417,67 @@
     ```bash
     sudo chmod +x /usr/local/bin/docker-compose
     ```
+
+## Section7. docker 주요 명령 익히기
+### 도커에 대한 기본 이해
+1. docker는 서버/클라이언트 구조
+    - docker daemon process(서버): 도커 엔진, 백그라운드에서 실행
+    - docker command(클라이언트): 사용자가 명령어 입력
+
+2. docker image 
+    - docker 컨테이너를 실행하기 위한 명령들을 가진 템플릿
+    - 여러 이미지들을 layer로 쌓아서, 원하는 형태의 이미지를 만드는 것이 일반적임
+
+3. docker container
+    - docker image가 리눅스 컨테이너를 실행하기 위한 인스턴스
+    - docker image에 포함된 명령을 실행하여, docker container를 생성
+    - 컨테이너는 격리된 환경에서 실행되며, 독립적으로 동작
+    - 컨테이너는 일시적이며, 필요에 따라 생성
+
+### docker 이미지 기본
+1. 주요 단계
+    - docker 설치 
+    - docker image 다운로드 
+        1. docker hub 가입 : [https://hub.docker.com/](https://hub.docker.com/ "Go to url")
+        2. `docker login`: 도커 허브 로그인
+        3. `docker search --limit=5 이미지이름` : 이미지 검색
+        4. OFFICIAL [OK] : 공식 이미지
+        5. `ubuntu/squid` : `/` 앞에는 사용자명, 뒤에는 이미지명
+        6. 특정 이미지의 태그 리스트 확인은 CLI상으로는 불가능 
+            - 웹사이트에서 확인 가능
+        7. `docker pull <이미지명>:<태그명>`: 도커 이미지 다운로드
+        8. `docker images`: 다운로드 받은 도커 이미지 목록 확인
+        9. `docker image ls -q`: **이미지 ID만 출력**
+
+    - 다운로드 받은 image로 docker container 생성 및 실행
+
+2. 명령어 주요 형태 
+    - `docker 명령 옵션 선택자(이미지ID/컨테이너등)`
+
+### docker 주요 명령어 익히기
+- `docker run`: 도커 컨테이너 생성  및 실행
+- `docker ps`: 실행 중인 컨테이너 목록 확인
+- `docker stop`: 실행 중인 컨테이너 중지
+- `docker rm`: 중지된 컨테이너 삭제
+- `docker rmi`: 도커 이미지 삭제
+
+### Docker Container 관련 주요 명령
+
+1. 도커 컨테이너 생성 
+    - `docker create <이미지명>:<태그명>`
+    - `docker create ubuntu`
+    - `docker create --name my_ubuntu ubuntu` : 컨테이너 이름 지정
+
+2. 생성된 컨테이너 확인 
+    - `docker ps -a`
+    - `docker ps` : 실행 중인 컨테이너만 확인
+    - `docker ps -a -q` : 컨테이너 ID만 출력
+
+3. 
+
+
+
+
+
+
+

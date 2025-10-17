@@ -510,4 +510,9 @@
     - `docker exec -it <컨테이너ID or 이름> /bin/bash`
     - `docker attach <컨테이너ID or 이름>` : 실행 중인 컨테이너에 연결
 
+6. 컨테이너 종료 
+    - <span class='hl'>컨테이너 종료</span> 하기 
 
+    ```
+    docker stop <컨테이너ID or 이름>
+    ```

@@ -1,0 +1,422 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  margin: 0 auto;
+  color: #cca94c;
+  font-family: "Spoqa Han Sans Neo", "sans-serif";
+}
+
+/* a 태그 초기화 */
+a {
+  all: unset;
+}
+a:link {
+  text-decoration: none;
+  color: #cca94c;
+}
+a:visited {
+  text-decoration: none;
+  color: #cca94c;
+}
+a:active {
+  text-decoration: none;
+  color: #cca94c;
+}
+a:hover {
+  text-decoration: none;
+  color: #cca94c;
+}
+
+.inner {
+  width: 100%;
+  height: 100%;
+  margin: 0 auto;
+  padding: 0 2rem;
+  overflow: hidden;
+}
+
+header {
+  width: 100%;
+  height: 60px;
+  background-color: #fff3b9;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+}
+
+.head-container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.head-container .head-brand {
+  font-weight: bold;
+  font-size: 1.2rem;
+}
+
+.head-container .head-brand a:hover {
+  color: #b84ccc !important;
+  cursor: pointer;
+}
+
+.head-container .head-email {
+  font-weight: bold;
+  font-size: 0.8rem;
+}
+
+.head-container .head-email a:hover {
+  color: #b84ccc;
+  cursor: pointer;
+}
+
+section {
+  width: 100%;
+  background-color: #ffffff;
+  position: relative;
+}
+
+.main {
+  height: 360px;
+  background-image: url("../img/colorful-background.jpg");
+  background-size: cover;
+  background-position: center 10%;
+  background-repeat: no-repeat;
+  z-index: 1;
+}
+
+.main-container {
+  width: 100%;
+  height: 100%;
+  /* background-color: #fff3b9; */
+  opacity: 0.8;
+  z-index: 2;
+  margin-top: 60px;
+}
+
+.title-container {
+  padding-top: 100px;
+  padding-bottom: 100px;
+}
+
+.title {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #b84ccc;
+  padding-bottom: 0.8rem;
+}
+
+.message {
+  font-size: 1.4rem;
+  color: #b84ccc;
+  line-height: 2rem;
+}
+
+.skill-container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 1rem 0;
+}
+
+.skill {
+  width: 25%;
+  background-color: #fff;
+  display: flex;
+  align-items: center;
+  border-radius: 9px;
+  padding: 0.5rem 1rem;
+  margin: 0 1rem;
+  color: #0a1a73;
+  box-shadow: 10px 10px 20px rgba(25, 42, 70, 0.2);
+  transition: 0.4s;
+}
+
+.skill:hover {
+  transform: translate(0, -5px);
+  box-shadow: 10px 10px 20px rgba(25, 42, 70, 0.5);
+  cursor: pointer;
+}
+
+.skill-icon {
+  font-size: 2.5rem;
+  margin: 0 7px;
+}
+
+.skill-title {
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+  padding-left: 10px;
+}
+
+.skill-name {
+  font-weight: bold;
+  margin-bottom: 0.2rem;
+}
+
+.skill-usage {
+  font-size: 0.9rem;
+  color: #968699;
+  margin-bottom: 0.2rem;
+  padding-left: 0.5rem;
+  line-height: 0.8rem;
+}
+
+.python-style {
+  color: #0433bf;
+}
+
+.database-style {
+  color: #f2cb05;
+}
+
+.globe-style {
+  color: #590202;
+}
+
+.roadmap-container {
+  width: 100%;
+  margin-top: 2rem;
+}
+
+.roadmap-title-container {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.roadmap-title {
+  font-size: 1.3rem;
+  font-weight: bold;
+  color: #968699;
+}
+
+.slide-prev {
+  font-size: 2rem;
+  color: #968699;
+  cursor: pointer;
+  color: #6e6e6e;
+}
+
+.slide-next {
+  font-size: 2rem;
+  color: #0433bf;
+  cursor: pointer;
+}
+
+.slide-prev-hover:hover {
+  transition: transform 0.3s ease-in-out;
+  transform: translateX(-2px);
+}
+.slide-next-hover:hover {
+  transition: transform 0.3s ease-in-out;
+  transform: translateX(2px);
+}
+
+.arrow-container {
+  display: flex;
+}
+
+.class-list {
+  display: flex;
+  list-style: none;
+  padding: 1rem 0;
+  margin: 1rem 0 0 0;
+  overflow: none;
+}
+
+.class-card {
+  max-width: 240px;
+  min-height: 315px;
+  box-shadow: 10px 10px 20px rgba(25, 42, 70, 0.2);
+  border-radius: 8px;
+  margin: 0 10px;
+  transition: 0.4s;
+  flex-shrink: 0;
+}
+
+.class-card:hover {
+  transform: translate(0, -5px);
+  box-shadow: 10px 10px 20px rgba(25, 42, 70, 0.5);
+  cursor: pointer;
+}
+
+.class-image {
+  max-width: 100%;
+  border-radius: 8px 8px 0 0;
+  /* height: 150px; */
+}
+
+.class-container {
+  width: 100%;
+  padding: 0.5rem 1rem 1rem 1rem;
+}
+
+.class-skill {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.class-type {
+  font-size: 0.9rem;
+  color: #968699;
+}
+
+.class-format {
+  font-size: 0.9rem;
+  color: #fff;
+  background-color: #b84ccc;
+  padding: 0.2rem;
+}
+
+.class-desc {
+  margin-top: 1rem;
+  color: #968699;
+}
+
+.class-desc:hover {
+  color: #42bcbe;
+  cursor: pointer;
+}
+
+.class-title {
+  font-size: 0.9rem;
+  font-weight: bold;
+  color: inherit;
+  width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-bottom: 0.5rem;
+}
+.class-detail {
+  font-size: 0.8rem;
+  color: inherit;
+  line-height: 1.5rem;
+}
+
+.roadmap-desc {
+  display: visual;
+}
+
+footer {
+  border-top: 1px solid #fff3b9;
+  background-color: #fff3b9;
+  padding: 1rem 0;
+  margin: 1rem 0;
+}
+
+.footer-message {
+  font-weight: bold;
+  font-size: 0.9rem;
+  color: #cca94c;
+  margin-bottom: 0.8rem;
+}
+
+.footer-contact {
+  font-size: 0.9rem;
+  color: #cca94c;
+  margin-bottom: 0.4rem;
+}
+
+.footer-copyright {
+  font-size: 0.9rem;
+  color: #cca94c;
+}
+
+#backtotop {
+  background-color: #968699;
+  width: 40px;
+  height: 40px;
+  text-align: center;
+
+  border-radius: 20px;
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  transition-property: background-color, opacity, visibility;
+  transition-duration: 0.3s, 0.5s, 0.5s;
+  opacity: 0;
+  visibility: hidden;
+  z-index: 999;
+}
+
+/* 아이콘 적용 방법
+  1. ::after (요소 뒤에 content 추가) 가상 요소에서,
+  2. content: "폰트어썸 유니코드"를 넣고, 
+  3. font-family: FontAwesome 이라고 넣으면 됨
+*/
+#backtotop::after {
+  content: "\f077";
+  font-family: FontAwesome;
+  font-size: 1.5rem;
+  line-height: 40px;
+  color: #ffffff;
+}
+
+#backtotop.show:hover {
+  cursor: pointer;
+  background-color: #a179ff;
+}
+
+#backtotop.show {
+  opacity: 1;
+  visibility: visible;
+  background-color: #968699;
+}
+
+ul li img:hover {
+  cursor: grab;
+}
+
+ul li img:active {
+  cursor: grabbing;
+}
+
+@media only screen and (min-width: 1200px) {
+  .inner {
+    max-width: 1200px;
+  }
+}
+
+@media only screen and (max-width: 900px) {
+  /* .skill-title {
+    display: none;
+  } */
+  .skill {
+    display: none;
+  }
+  .roadmap-desc {
+    display: none;
+  }
+}
+
+/* =========================== */
+/* Color Theme Swatches in Hex */
+.MC201---Web-Page-1-hex {
+  color: #b84ccc;
+}
+.MC201---Web-Page-2-hex {
+  color: #968699;
+}
+.MC201---Web-Page-3-hex {
+  color: #a179ff;
+}
+.MC201---Web-Page-4-hex {
+  color: #fff3b9;
+}
+.MC201---Web-Page-5-hex {
+  color: #cca94c;
+}

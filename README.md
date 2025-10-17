@@ -1,3 +1,13 @@
+<style>
+    .hl { background-color: #fdc7d7; padding: 1px 6px; border-radius: 3px; color: #000000; }
+    .hl-yellow { background-color: #FFF2CC; padding: 1px 6px; border-radius: 3px; }
+    .hl-blue { background-color: #CCE5FF; padding: 1px 6px; border-radius: 3px; }
+    .hl-green { background-color: #D5E8D4; padding: 1px 6px; border-radius: 3px; }
+    .hl-pink { background-color: #FFE6E6; padding: 1px 6px; border-radius: 3px; }
+</style>
+
+
+
 <!-- *NOTE* for write markdown -->
 
 <!-- 
@@ -499,15 +509,5 @@
 5. 컨테이너 접속 
     - `docker exec -it <컨테이너ID or 이름> /bin/bash`
     - `docker attach <컨테이너ID or 이름>` : 실행 중인 컨테이너에 연결
-
-
-
-
-
-
-
-
-
-
 
 

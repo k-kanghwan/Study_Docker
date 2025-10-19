@@ -1,5 +1,6 @@
 <style>
     .hl { background-color: #acd3f0ff; padding: 1px 6px; border-radius: 3px; color: #000000; }
+    .hl-title { background-color: #acd3f0ff; padding: 3px 6px; border-radius: 10px; color: #000000; }
     .hl-yellow { background-color: #FFF2CC; padding: 1px 6px; border-radius: 3px; }
     .hl-blue { background-color: #CCE5FF; padding: 1px 6px; border-radius: 3px; }
     .hl-green { background-color: #D5E8D4; padding: 1px 6px; border-radius: 3px; }
@@ -97,6 +98,18 @@
       - [실행중인 컨테이너 리소스 사용량 확인](#실행중인-컨테이너-리소스-사용량-확인)
       - [실행중인 컨테이너에 명령 실행하기](#실행중인-컨테이너에-명령-실행하기)
       - [모든 컨테이너 삭제](#모든-컨테이너-삭제)
+  - [Section8. Dockerfile 사용법 기본](#section8-dockerfile-사용법-기본)
+    - [Dockerfile 주요 명령어](#dockerfile-주요-명령어)
+    - [Dockerfile로 이미지 작성](#dockerfile로-이미지-작성)
+        - [Dockerfile 예시](#dockerfile-예시)
+      - [주요 옵션](#주요-옵션)
+    - [Docker Image 조사(`docker inspect`)](#docker-image-조사docker-inspect)
+    - [Docker 가끔 사용하는 기타 명령어들](#docker-가끔-사용하는-기타-명령어들)
+    - [`ENTRYPOINT`](#entrypoint)
+    - [`EXPOSE`](#expose)
+    - [`ENV` : 환경 변수 설정](#env--환경-변수-설정)
+    - [`WORKDIR`: 작업 디렉토리 설정](#workdir-작업-디렉토리-설정)
+    - [Docker DB 설정 예시](#docker-db-설정-예시)
 
 ---
 ## Section1. 도커 강의 소개
@@ -396,7 +409,7 @@
 - 강제 종료 : `:q!` (quit without saving)
 - 저장 후 종료 : `:wq` or `:x`
 
-## Section6. 리눅스, 맥, 윈도우에서의 도커 환경 구축
+## Section6. <span class='hl-title'>리눅스, 맥, 윈도우에서의 도커 환경 구축</span>
 ### Mac / Windows Docker 설치
 #### Mac 설치  
 - `Docker for mac` 검색 후 설치 - 간단
@@ -559,6 +572,8 @@ docker search httpd:latest --limit=5
 #### 이미지 다운로드받고 바로 컨테이너로 만들어 실행시키기(`-p` 옵션 이해하기)
 1. 실행
 
+    - <span class='hl-yellow'>docker run -dit --name {컨테이너이름} {이미지명}</span>
+
     ```bash
     docker run -dit --name appacheweb httpd
     ```
@@ -621,4 +636,134 @@ docker exec -it my_apache_web /bin/sh
 docker stop $(docker ps -a -q)
 docker rm $(docker ps -a -q)
 docker rmi $(docker images -q)
+```
+
+## Section8. Dockerfile 사용법 기본
+
+### <span class='hl'>Dockerfile 주요 명령어</span>
+| 명령어       | 설명                                                                 |
+| ------------ | -------------------------------------------------------------------- |
+| `FROM`       | 베이스 이미지 지정(예: `FROM ubuntu:latest`)                         |
+| `LABEL`      | 이미지에 메타데이터 추가(`inspect`에 포함되는 정보)                  |
+| `CMD`        | 컨테이너 실행 시 기본으로 실행될 명령어 지정                         |
+| `RUN`        | 이미지 빌드 시 실행할 명령어                                         |
+| `ENTRYPOINT` | 컨테이너 시작 시 실행될 명령어 지정                                  |
+| `EXPOSE`     | 컨테이너가 수신할 포트 지정                                          |
+| `ENV`        | 환경 변수 설정                                                       |
+| `WORKDIR`    | 작업 디렉토리 설정                                                   |
+| `COPY`       | 파일/디렉토리를 이미지에 복사<br>(도커파일이 위치한 상대경로로 작성) |
+
+
+### Dockerfile로 이미지 작성 
+
+- Dockerfile: 도커 이미지를 자동으로 빌드하기 위한 설정 파일
+- [Dockerfile](#dockerfile-예시) 작성 후, `docker build` 명령어로 이미지 생성
+
+```bash 
+docker build -t <이미지명>:<태그명> <Dockerfile이 있는 경로>
+# 예시
+docker build -t my_apache_image:1.0 ./
+```
+
+##### Dockerfile 예시
+```bash
+# 문서에 대해 설명을 하기 위한
+LABEL maintainer="star2kis@nate.com"
+# Base 이미지 지정
+FROM httpd:alpine
+
+# 문서에 대해 설명을 하기 위한
+LABEL maintainer="star2kis@nate.com"
+LABEL version="1.0.0"
+LABEL description="A test docker image to understand Docker"
+
+# 상대경로로 작성
+COPY ./index_html_test /usr/local/apache2/htdocs
+
+# CMD
+CMD ["/bin/sh", "-c", "httpd-foreground"]
+
+# ENTRYPOINT
+ENTRYPOINT ["/usr/local/bin/httpd-foreground"]
+```
+
+#### 주요 옵션
+| 옵션          | 설명                                                      |
+| ------------- | --------------------------------------------------------- |
+| `-t`          | 이미지 이름과 태그 지정                                   |
+| `-f`          | Dockerfile 경로 지정(지정하지 않으면 `./Dockerfile` 참조) |
+| `--pull=true` | 이미지 생성 시 마다 새로 다운로드                         |
+
+### Docker Image 조사(`docker inspect`)
+
+```bash
+docker inspect <이미지ID or 이름>
+```
+
+### Docker 가끔 사용하는 기타 명령어들 
+- `docker logs <컨테이너ID or 이름>`: 컨테이너 로그 확인
+- `docker kill <컨테이너ID or 이름>`: 실행 중인 컨테이너 강제 종료
+
+### `ENTRYPOINT`
+- 컨테이너 시작 시 실행될 명령어를 지정
+- `CMD`와 함께 사용되며, `CMD`는 기본 인수로 전달됨
+- 예시: `ENTRYPOINT ["/usr/local/bin/httpd-foreground"]`
+
+### `EXPOSE`
+- 컨테이너가 수신할 포트를 지정
+- 예시: `EXPOSE 80`
+
+``` bash
+"ExposedPorts": {"80/tcp": {}},
+```
+
+### `ENV` : 환경 변수 설정
+
+- 컨테이너 내에서 사용할 환경 변수를 설정
+
+```bash
+FROM mysql:latest
+
+ENV MYSQL_ROOT_PASSWORD=password
+ENV MYSQL_DATABASE=dbname
+```
+
+
+### `WORKDIR`: 작업 디렉토리 설정 
+- 컨테이너 내에서 작업할 디렉토리를 설정
+- 예시: `WORKDIR /app`
+
+
+### <span class='hl-title   '>Docker DB 설정 예시</span>
+1. Dockerfile 예시
+```bash
+FROM mysql:latest
+
+ENV MYSQL_ROOT_PASSWORD=password
+ENV MYSQL_DATABASE=dbname 
+```
+
+2. 이미지 빌드
+```bash
+docker build -t my_mysql_image:1.0 -f Dockerfile-MYSQL ./
+```
+
+3. 컨테이너 실행
+```bash
+docker run -dit -p 3306:3306 --name my_mysql_container my_mysql_image:1.0
+``` 
+4. MySQL 접속
+```bash
+docker exec -it my_mysql_container /bin/bash
+mysql -u root -p
+```
+
+**<u>Output</u>**
+```bash
+Enter password: password
+```
+
+5. 데이터베이스 확인
+```sql
+SHOW DATABASES;
 ```

@@ -96,6 +96,11 @@
       - [Docker Compose 실행 명령 : `docker-compose up`](#docker-compose-실행-명령--docker-compose-up)
       - [Docker Compose 중지 명령 : `docker-compose stop`](#docker-compose-중지-명령--docker-compose-stop)
       - [Docker Compose 에서 사용하는 컨테이너 삭제 명령 : `docker-compose down`](#docker-compose-에서-사용하는-컨테이너-삭제-명령--docker-compose-down)
+    - [Docker Compose YAML 추가 옵션들](#docker-compose-yaml-추가-옵션들)
+      - [05\_docker-compose.pdf - docker-compose.yml 예로 이해하는 Docker Compose 사용법2 참고](#05_docker-composepdf---docker-composeyml-예로-이해하는-docker-compose-사용법2-참고)
+      - [주요 옵션 설명](#주요-옵션-설명)
+      - [기타 유용한 Docker Compose 명령어](#기타-유용한-docker-compose-명령어)
+      - [예시](#예시)
 
 ---
 ## Section1. 도커 강의 소개
@@ -966,11 +971,134 @@ docker-compose stop
     docker-compose down
     ```
 
+### Docker Compose YAML 추가 옵션들
+#### [05_docker-compose.pdf](https://drive.google.com/file/d/10JUe_qbcFAWTXC6wUbNcWOOOJmFzM_7m/view?usp=drive_link "05_docker-compose.pdf") - docker-compose.yml 예로 이해하는 Docker Compose 사용법2 참고
+
+#### 주요 옵션 설명
+1. `build`: 이미지 빌드 설정
+2. `links`: 컨테이너 간 네트워크 링크 설정
+3. `dockerignore`: 빌드 컨텍스트에서 제외할 파일 목록(git의 .gitignore와 유사)
+4. `container_name`: 컨테이너 이름 지정
+5. `depends_on`: 서비스 간 <span class='hl'>의존성 설정</span>
+    - <span class='hl-yellow'>특정 컨테이너가 다른 컨테이너보다 먼저 시작되도록 설정</span>
+
+#### 기타 유용한 Docker Compose 명령어
+1. `docker-compose logs`: 컨테이너 로그 확인
+2. `docker-compose config`: YAML 파일(docker-compose.yml) 문법 및 설정 확인
+3. `docker-compose exec`: 실행 중인 컨테이너에 명령어 실행
+
+#### 예시 
+
+- <u>**docker-compose.yml 예시**</u>  
+    ```bash
+    version: "3"
+
+    services:
+    app:
+        build:
+        context: ./01_FLASK_DOCKER
+        dockerfile: Dockerfile
+        links:
+        - "db:mysqldb"
+        ports:
+        - "80:8080"
+        container_name: appcontainer
+        depends_on:
+        - db
+
+    db:
+        image: mysql:5.7
+        volumes:
+        - ./mysqldata:/var/lib/mysql
+        environment:
+        - MYSQL_ROOT_PASSWORD=test
+        - MYSQL_DATABASE=test_db
+        ports:
+        - "3306:3306"
+        container_name: dbcontainer
+    ```
+
+- <u>**01_FLASK_DOCKER/Dockerfile 예시**</u>
+
+    ```bash
+    FROM continuumio/miniconda
+    COPY ./ /app
+    WORKDIR /app
+    RUN pip install flask pymysql cryptography
+
+    CMD ["python", "main.py"]
+    ```
+
+- <u>**01_FLASK_DOCKER/main.py 예시**</u>
+
+    ```python
+    from flask import Flask
+    import pymysql
+
+    app = Flask(__name__)
+
+    MYSQL_HOST = 'mysqldb'
+    MYSQL_PORT = 3306
+
+    def conn_mysqldb():
+        MYSQL_CONN = pymysql.connect(
+            host=MYSQL_HOST,
+            port=MYSQL_PORT,
+            user='root',
+            passwd='funcoding',
+            db='davedb',
+            charset='utf8'
+        )
+        return MYSQL_CONN
+
+
+    @app.route('/')
+    def hello_world():
+        mysql_db = conn_mysqldb()
+        db_cursor = mysql_db.cursor()
+        sql = "SHOW TABLES"
+        # print (sql)
+        db_cursor.execute(sql)
+        user = db_cursor.fetchone()
+        print (user, MYSQL_HOST)
+        return 'SUCCESS'
+
+
+    if __name__ == '__main__':
+        app.run(host='0.0.0.0', port='8080')
+    ```
 
 
 
 
-<!-- goto top  -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<br>
+<br>
+<br>
+<br>
+
 [⬆️ 맨 위로 이동](#docker-)
 
 ---

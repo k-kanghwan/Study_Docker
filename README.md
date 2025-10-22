@@ -16,6 +16,7 @@
     - [Docker란?](#docker란)
     - [리눅스](#리눅스)
       - [리눅스(Linux) 활용](#리눅스linux-활용)
+  - [Section4. 수업준비](#section4-수업준비)
   - [Section3. 클라우드 서비스(AWS 서버 구축)](#section3-클라우드-서비스aws-서버-구축)
     - [클라우드 컴퓨팅 설정](#클라우드-컴퓨팅-설정)
     - [클라우드 컴퓨팅 설정 - 리눅스 설치](#클라우드-컴퓨팅-설정---리눅스-설치)
@@ -135,6 +136,7 @@
 - 리눅스 토발즈(Linus Torvalds)가 개발
 - GPL(General Public License) 라이선스
 
+## Section4. 수업준비
 
 ## Section3. 클라우드 서비스(AWS 서버 구축)
 ### 클라우드 컴퓨팅 설정 
@@ -1111,4 +1113,29 @@ docker-compose stop
     .hl-green { background-color: #D5E8D4; padding: 1px 6px; border-radius: 3px; }
     .hl-pink { background-color: #FFE6E6; padding: 1px 6px; border-radius: 3px; }
     code { background-color: #f5f5f5; padding: 2px 4px; border-radius: 3px; }
+    
+    /* 헤더 넘버링 */
+    body { counter-reset: h2; }
+    h2 { counter-reset: h3; counter-increment: h2; }
+    h3 { counter-reset: h4; counter-increment: h3; }
+    h4 { counter-reset: h5; counter-increment: h4; }
+    h5 { counter-reset: h6; counter-increment: h5; }
+    h6 { counter-increment: h6; }
+    
+    h2:before { content: counter(h2) ". "; }
+    h3:before { content: counter(h2) "." counter(h3) ". "; }
+    h4:before { content: counter(h2) "." counter(h3) "." counter(h4) ". "; }
+    h5:before { content: counter(h2) "." counter(h3) "." counter(h4) "." counter(h5) ". "; }
+    h6:before { content: counter(h2) "." counter(h3) "." counter(h4) "." counter(h5) "." counter(h6) ". "; }
+    
+    /* Table of Contents에는 넘버링 제외 */
+    h2:first-of-type:before { content: ""; }
+    h2:first-of-type { counter-increment: none; }
+    
+    /* Table of Contents 하위 항목들도 넘버링 제외 */
+    h2:first-of-type ~ ul h3:before,
+    h2:first-of-type ~ ul h4:before,
+    h2:first-of-type ~ ul h5:before,
+    h2:first-of-type ~ ul h6:before { content: ""; }
+
 </style>

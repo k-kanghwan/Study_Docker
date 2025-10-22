@@ -1,40 +1,3 @@
-<style>
-    .hl { background-color: #acd3f0ff; padding: 1px 6px; border-radius: 3px; color: #000000; }
-    .hl-title { background-color: #acd3f0ff; padding: 3px 6px; border-radius: 10px; color: #000000; }
-    .hl-yellow { background-color: #FFF2CC; padding: 1px 6px; border-radius: 3px; }
-    .hl-blue { background-color: #CCE5FF; padding: 1px 6px; border-radius: 3px; }
-    .hl-green { background-color: #D5E8D4; padding: 1px 6px; border-radius: 3px; }
-    .hl-pink { background-color: #FFE6E6; padding: 1px 6px; border-radius: 3px; }
-    code { background-color: #f5f5f5; padding: 2px 4px; border-radius: 3px; }
-</style>
-
-
-
-<!-- *NOTE* for write markdown -->
-
-<!-- 
-  ## => seciton
-  <del>### => chapter in section </del>
-  ### => contents in section(chapter)
-
-  🚫#### 헤더는 사용하지 않음 -> 1., 2., 와 같은 리스트로 사용
-
-  📌 섹션으로 구분하며 챕터는 구분하지 않음
-  📌 단, 섹션의 하위에 사용되는 학습자료를 적어둠
-    ## Section2. 풀스택 큰그림 이해하기
-    > [1_understand_fullstack.ipynb](00_MATERIALS/1_understand_fullstack.ipynb "1_understand_fullstack.ipynb")
-  📌 학습자료는 00_MATERIALS 폴더에 저장
-  📌 이미지는 ref_images 폴더에 저장
-  📌 강의 듣는 도중 이해가 되지 않는 기술에 대해서는 포스트 작성
-  📌 듣는도중 의견이나 아이디어가 있으면 아래와 같은 comment 작성
-    💡 (의견이나 생각) - (강의제목 시간)
-    💡 frontend / backend 의 설명이 잘 되어 있음 - 프론트엔드와 백엔드 기본 구성 06:30
-
-
-★☆☆ : Importance
--->
-
-
 # Docker 🐳
 > version info  
 > ubuntu 24.04.3 LTS  
@@ -110,6 +73,29 @@
     - [`ENV` : 환경 변수 설정](#env--환경-변수-설정)
     - [`WORKDIR`: 작업 디렉토리 설정](#workdir-작업-디렉토리-설정)
     - [Docker DB 설정 예시](#docker-db-설정-예시)
+  - [Section9. 도커 활용을 위한 추가 명령 익히기](#section9-도커-활용을-위한-추가-명령-익히기)
+    - [Docker 간단 명령어 정리](#docker-간단-명령어-정리)
+      - [`docker history`: 이미지 생성 이력 확인](#docker-history-이미지-생성-이력-확인)
+      - [`docker cp`: 컨테이너와 호스트 간 파일 복사](#docker-cp-컨테이너와-호스트-간-파일-복사)
+      - [`docker commit`: 컨테이너 변경사항을 이미지로 저장](#docker-commit-컨테이너-변경사항을-이미지로-저장)
+      - [`docker diff`: 컨테이너와 이미지 간 변경사항 확인](#docker-diff-컨테이너와-이미지-간-변경사항-확인)
+      - [`docker inspect`: 이미지/컨테이너 상세 정보 확인](#docker-inspect-이미지컨테이너-상세-정보-확인)
+      - [`docker logs`: 컨테이너 로그 확인](#docker-logs-컨테이너-로그-확인)
+    - [컨테이너 활용과 연결](#컨테이너-활용과-연결)
+      - [docker로 jupyter notebook 띄우기](#docker로-jupyter-notebook-띄우기)
+  - [Section10. Docker Compose 사용법 기본](#section10-docker-compose-사용법-기본)
+    - [Docker Compose 작성 기본](#docker-compose-작성-기본)
+      - [version](#version)
+      - [services](#services)
+      - [image](#image)
+      - [volumes](#volumes)
+      - [restart](#restart)
+      - [environment](#environment)
+      - [ports](#ports)
+    - [Docker Compose 실행 / 중지 하기](#docker-compose-실행--중지-하기)
+      - [Docker Compose 실행 명령 : `docker-compose up`](#docker-compose-실행-명령--docker-compose-up)
+      - [Docker Compose 중지 명령 : `docker-compose stop`](#docker-compose-중지-명령--docker-compose-stop)
+      - [Docker Compose 에서 사용하는 컨테이너 삭제 명령 : `docker-compose down`](#docker-compose-에서-사용하는-컨테이너-삭제-명령--docker-compose-down)
 
 ---
 ## Section1. 도커 강의 소개
@@ -410,6 +396,10 @@
 - 저장 후 종료 : `:wq` or `:x`
 
 ## Section6. <span class='hl-title'>리눅스, 맥, 윈도우에서의 도커 환경 구축</span>
+
+> 📕 PDF
+> - [x] [01_docker_start.pdf](https://drive.google.com/file/d/1k9ncifj3-oA-kuMzbq6GsLk3ycoVwO71/view?usp=drive_link "01_docker_start.pdf")
+
 ### Mac / Windows Docker 설치
 #### Mac 설치  
 - `Docker for mac` 검색 후 설치 - 간단
@@ -455,6 +445,9 @@
     ```
 
 ## Section7. docker 주요 명령 익히기
+> 📕 PDF
+> - [x] [01_docker_start.pdf](https://drive.google.com/file/d/1k9ncifj3-oA-kuMzbq6GsLk3ycoVwO71/view?usp=drive_link "01_docker_start.pdf")
+
 ### 도커에 대한 기본 이해
 1. docker는 서버/클라이언트 구조
     - docker daemon process(서버): 도커 엔진, 백그라운드에서 실행
@@ -640,6 +633,9 @@ docker rmi $(docker images -q)
 
 ## Section8. Dockerfile 사용법 기본
 
+> 📕 PDF
+> - [x] [02_docker_dockerfile.pdf](https://drive.google.com/file/d/1gvH1gVAhmYRk6laqEMD-lwMTMeL9NL2G/view?usp=sharing "02_docker_dockerfile.pdf")
+
 ### <span class='hl'>Dockerfile 주요 명령어</span>
 | 명령어       | 설명                                                                 |
 | ------------ | -------------------------------------------------------------------- |
@@ -734,7 +730,7 @@ ENV MYSQL_DATABASE=dbname
 - 예시: `WORKDIR /app`
 
 
-### <span class='hl-title   '>Docker DB 설정 예시</span>
+### <span class='hl-title'>Docker DB 설정 예시</span>
 1. Dockerfile 예시
 ```bash
 FROM mysql:latest
@@ -764,6 +760,227 @@ Enter password: password
 ```
 
 5. 데이터베이스 확인
+
 ```sql
 SHOW DATABASES;
 ```
+
+## Section9. 도커 활용을 위한 추가 명령 익히기
+
+### Docker 간단 명령어 정리
+> - [x] [03_docker_inspect.pdf](https://drive.google.com/file/d/1nxDdVy68twwbLIRtooqrz8f4_LQj4VUq/view?usp=drive_link "03_docker_inspect.pdf")
+#### `docker history`: 이미지 생성 이력 확인
+
+**<u>Example</u>**
+```bash
+docker history <이미지ID or 이름>
+```
+
+**<u>Output</u>**
+```bash
+IMAGE          CREATED       CREATED BY                                      SIZE      COMMENT
+1524cea58ad9   2 days ago    ENTRYPOINT ["/usr/sbin/apache2ctl" "-D" "FOR…   0B        buildkit.dockerfile.v0
+<missing>      2 days ago    COPY ./index_html_test /var/www/html/ # buil…   1.27MB    buildkit.dockerfile.v0
+<missing>      2 days ago    RUN /bin/sh -c apt-get install -y apache2 # …   96.5MB    buildkit.dockerfile.v0
+<missing>      2 days ago    RUN /bin/sh -c apt-get update # buildkit        45.7MB    buildkit.dockerfile.v0
+<missing>      2 days ago    LABEL maintainer=test@test.com                  0B        buildkit.dockerfile.v0
+<missing>      2 years ago   /bin/sh -c #(nop)  CMD ["/bin/bash"]            0B        
+<missing>      2 years ago   /bin/sh -c #(nop) ADD file:3c74e7e08cbf9a876…   63.2MB    
+<missing>      2 years ago   /bin/sh -c #(nop)  LABEL org.opencontainers.…   0B        
+<missing>      2 years ago   /bin/sh -c #(nop)  LABEL org.opencontainers.…   0B        
+<missing>      2 years ago   /bin/sh -c #(nop)  ARG LAUNCHPAD_BUILD_ARCH     0B        
+<missing>      2 years ago   /bin/sh -c #(nop)  ARG RELEASE                  0B  
+```
+
+#### `docker cp`: 컨테이너와 호스트 간 파일 복사
+```bash
+# 컨테이너 작성 
+docker run -d -p 9999:80 --name {컨테이너 이름} {이미지 이름}
+# apache2 설정 파일 가져오기
+docker cp mywebserver:/etc/apache2/sites-available/000-default.conf ./
+# 컨테이너로 파일 복사하기
+docker cp ./000-default.conf mywebserver:/etc/apache2/sites-available/000-default.conf
+```
+
+#### `docker commit`: 컨테이너 변경사항을 이미지로 저장
+
+```bash
+docker commit {컨테이너 이름} {이미지 이름}:{태그}
+```
+
+#### `docker diff`: 컨테이너와 이미지 간 변경사항 확인
+
+| 기호 | 의미        |
+| ---- | ----------- |
+| A    | 추가된 파일 |
+| D    | 삭제된 파일 |
+| C    | 변경된 파일 |
+
+```bash
+docker diff {컨테이너 이름}
+```
+
+#### `docker inspect`: 이미지/컨테이너 상세 정보 확인
+
+```bash
+docker inspect {이미지ID or 이름}   
+```
+
+#### `docker logs`: 컨테이너 로그 확인
+
+```bash
+docker logs {컨테이너 이름}
+```
+
+### 컨테이너 활용과 연결
+> 📕 PDF
+> - [x] [04_docker_link.pdf](https://drive.google.com/file/d/1XDufYoKymUYURbrXYEIA3lsHOZfiNUkA/view?usp=drive_link "04_docker_link.pdf")
+
+#### docker로 jupyter notebook 띄우기
+> *에러가 있는듯 함.. 실행 시 터미널 진행이 안됨.. 확인 필요*
+```bash 
+# jupyter notebook 실행 
+docker run --rm -d -p 8888:8888 -v /home/ubuntu/2025_LEARN:/home/jovyan/work jupyter/datascience-notebook 
+# jupyter token 확인 후 웹브라우저에서 접속
+docker logs {컨테이너 이름}
+```
+
+## Section10. Docker Compose 사용법 기본
+> 📕 PDF
+> - [x] [05_docker-compose.pdf](https://drive.google.com/file/d/10JUe_qbcFAWTXC6wUbNcWOOOJmFzM_7m/view?usp=drive_link "05_docker-compose.pdf")
+> 🌐 WEB
+> - [x] [yaml to json https://onlineyamltools.com/convert-yaml-to-json](https://onlineyamltools.com/convert-yaml-to-json "Go to url")
+
+### Docker Compose 작성 기본
+- docker-compose.yml 파일 작성
+
+    <u>**YAML Example**</u>
+    ```yaml
+    version: "3"  
+    services:
+      db:
+        image: mysql:latest 
+        restart: always  # 컨테이너가 중지되었을 때 자동 재시작 
+        volumes:
+          - ./mysqldata:/var/lib/mysql  # 데이터 영속성을 위한 볼륨 마운트 
+        environment: 
+          - MYSQL_ROOT_PASSWORD=password
+          - MYSQL_DATABASE=test_db
+        ports:
+          - "3306:3306"  # 호스트와 컨테이너 포트 매핑
+    ```
+
+#### version 
+- 도커 컴포즈 파일의 버전 지정
+- 일반적으로 '3' 또는 '3.x' 사용 
+- [버전별 호환성 확인 사이트(https://docs.docker.com/reference/compose-file/legacy-versions/)](https://docs.docker.com/reference/compose-file/legacy-versions/)
+
+    ```yaml
+    version: "3"
+    ```
+
+#### services 
+- 도커 <span class='hl'>컨테이너로 실행</span> 할 서비스 정의
+
+    ```yaml
+    services:
+      db:
+        image: mysql:latest
+    ```
+
+#### image
+- 도커 허브 또는 로컬에 있는 도커 이미지 지정
+
+    ```yaml
+    image: mysql:latest
+    ```
+
+#### volumes
+- 호스트와 컨테이너 간 디렉토리/파일을 연결하는 옵션 
+- docker run 명령어의 `-v` 옵션과 동일한 역할
+
+    ```yaml
+    volumes:
+      - ./mysqldata:/var/lib/mysql
+    ```
+
+#### restart 
+- 컨테이너가 중지되었을 때 자동 재시작 정책 설정
+- 주요 옵션
+    - `no`: 자동 재시작 안함 (기본값)
+    - `always`: <span class='hl'>항상 재시작</span>
+    - `on-failure`: 비정상 종료 시 재시작
+
+#### environment 
+- Dockerfile의 `ENV`와 동일한 역할 
+- 컨테이너 내에서 사용할 환경 변수를 설정
+
+    ```yaml
+    environment:
+      - MYSQL_ROOT_PASSWORD=password
+      - MYSQL_DATABASE=test_db
+    ```
+
+- <span class='hl'>env_file</span> : 환경 변수 파일 지정
+    - 보안상 민감한 정보를 외부 파일로 관리할 때 유용
+
+    ```yaml
+    env_file:
+      - ./my_env_file.env
+
+    # env 파일 예시
+    MYSQL_ROOT_PASSWORD=password
+    MYSQL_DATABASE=test_db
+    ```
+
+#### ports 
+- docker run 명령어의 `-p` 옵션과 동일한 역할 
+- 호스트와 컨테이너 포트를 매핑
+
+    ```yaml
+    ports:
+      - "3306:3306"  # 쌍따옴표 필수
+    ```
+
+### Docker Compose 실행 / 중지 하기
+
+#### Docker Compose <span class='hl'>실행</span> 명령 : `docker-compose up`
+
+- 보통 `-d` 옵션으로 백그라운드 실행
+
+    ```bash
+    docker-compose up -d
+    ```
+
+#### Docker Compose 중지 명령 : `docker-compose stop`
+
+```bash
+docker-compose stop
+```
+
+#### Docker Compose 에서 사용하는 컨테이너 <span class='hl'>삭제</span> 명령 : `docker-compose down`
+
+- `docker-compose up` 으로 생성된 모든 컨테이너 삭제
+
+    ```bash
+    docker-compose down
+    ```
+
+
+
+
+
+<!-- goto top  -->
+[⬆️ 맨 위로 이동](#docker-)
+
+---
+
+<style>
+    .hl { background-color: #acd3f0ff; padding: 1px 6px; border-radius: 3px; color: #000000; }
+    .hl-title { background-color: #acd3f0ff; padding: 3px 6px; border-radius: 10px; color: #000000; }
+    .hl-yellow { background-color: #FFF2CC; padding: 1px 6px; border-radius: 3px; }
+    .hl-blue { background-color: #CCE5FF; padding: 1px 6px; border-radius: 3px; }
+    .hl-green { background-color: #D5E8D4; padding: 1px 6px; border-radius: 3px; }
+    .hl-pink { background-color: #FFE6E6; padding: 1px 6px; border-radius: 3px; }
+    code { background-color: #f5f5f5; padding: 2px 4px; border-radius: 3px; }
+</style>

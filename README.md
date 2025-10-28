@@ -102,6 +102,11 @@
       - [주요 옵션 설명](#주요-옵션-설명)
       - [기타 유용한 Docker Compose 명령어](#기타-유용한-docker-compose-명령어)
       - [예시](#예시)
+  - [Section11. 웹서버 이해와 도커로 웹서버 구축](#section11-웹서버-이해와-도커로-웹서버-구축)
+    - [웹서버](#웹서버)
+    - [Apache vs Nginx](#apache-vs-nginx)
+    - [Nginx 기본 사용법](#nginx-기본-사용법)
+    - [default 파일의 server 설정](#default-파일의-server-설정)
 
 ---
 ## Section1. 도커 강의 소개
@@ -1070,16 +1075,52 @@ docker-compose stop
         app.run(host='0.0.0.0', port='8080')
     ```
 
+## Section11. 웹서버 이해와 도커로 웹서버 구축 
+> 📕 PDF
+> - [x] [06_nginx_apache.pdf](https://drive.google.com/file/d/1J1GkBToRkqXRRaJn34ZR0HeQqi5qt8XT/view?usp=drive_link "06_nginx_apache.pdf")
 
+### 웹서버 
+- 웹서버: 클라이언트(웹브라우저)의 요청을 받아, HTML 문서나 이미지 등 정적 파일 또는 동적 컨텐츠를 제공하는 서버 소프트웨어
+- 주요 웹서버 소프트웨어
+    - Apache HTTP Server (아파치)
+    - Nginx (엔진엑스)
 
+### Apache vs <span class='hl'>Nginx</span>  
+| 특징           | Apache                         | Nginx                        |
+| -------------- | ------------------------------ | ---------------------------- |
+| 아키텍처       | 프로세스 기반                  | 이벤트 기반                  |
+| 성능           | 높은 동시 접속 처리에 비효율적 | 높은 동시 접속 처리에 효율적 |
+| 정적 파일 처리 | 모듈 방식으로 처리             | 비동기 방식으로 처리         |
+| 리버스 프록시  | 지원하지 않음                  | 기본적으로 지원              |
 
+### Nginx 기본 사용법
 
+```bash
+docker run -dit -p 8080:80 --name myos ubuntu:20.04
+docker exec -it myos /bin/bash  
 
+apt-get update 
+apt-get install nginx  # 6. Asia, 69. Seoul
 
+apt-get install vim
 
+find -name nginx.conf
+```
 
+> <u>**nginx.conf 내용**</u>
+>    - Nginx의 주요 설정 파일
+>    - 주요 설정 항목
+>        - `worker_processes`: 워커 프로세스 수 설정
+>        - `events`: 이벤트 처리 설정
+>        - `http`: HTTP 서버 설정
 
+### default 파일의 server 설정
 
+> default 파일 위치: `/etc/nginx/sites-available/default`
+
+1. `listen 80;` : Nginx가 수신할 포트 설정
+2. `server_name localhost;` : 서버 이름 설정 ex: http://www.my_first_homepage.com
+3. `location / {}` : 루트 경로에 대한 설정
 
 
 

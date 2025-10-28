@@ -107,6 +107,11 @@
     - [Apache vs Nginx](#apache-vs-nginx)
     - [Nginx 기본 사용법](#nginx-기본-사용법)
     - [default 파일의 server 설정](#default-파일의-server-설정)
+  - [Section12. nginx 웹서버로 Reverse Proxy 도커 구축하기](#section12-nginx-웹서버로-reverse-proxy-도커-구축하기)
+    - [Nginx Reverse Proxy](#nginx-reverse-proxy)
+      - [Proxy 서버란?](#proxy-서버란)
+      - [Reverse Proxy 란?](#reverse-proxy-란)
+    - [nginx reverse proxy 테스트1: 포트로 구분](#nginx-reverse-proxy-테스트1-포트로-구분)
 
 ---
 ## Section1. 도커 강의 소개
@@ -1123,16 +1128,23 @@ find -name nginx.conf
 3. `location / {}` : 루트 경로에 대한 설정
 
 
+## Section12. nginx 웹서버로 Reverse Proxy 도커 구축하기
+> 📕 PDF
+> - [x] [06_nginx_apache.pdf](https://drive.google.com/file/d/1J1GkBToRkqXRRaJn34ZR0HeQqi5qt8XT/view?usp=drive_link "06_nginx_apache.pdf")
 
+### Nginx Reverse Proxy 
+#### Proxy 서버란?
+- 클라이언트와 서버 사이에 중개자 역할을 하는 서버
+- 클라이언트의 요청을 받아, 실제 서버에 전달하고, 서버의 응답을 클라이언트에게 전달
 
+#### Reverse Proxy 란?
+- 클라이언트가 직접 서버에 접근하지 않고, 프록시 서버를 통해 서버에 접근하는 방식
+- 보안 강화, 로드 밸런싱, 캐싱 등 다양한 목적으로 사용
 
-
-
-
-
-
-
-
+### nginx reverse proxy 테스트1: 포트로 구분
+> 📂 Folder
+> - [x] [docker-compose.yml](DOCKER_FUNCODING_20240425/00_FINAL_CODE/03_NGINX_PROXY_PORT/docker-compose.yml)
+> - [x] [nginx.conf](DOCKER_FUNCODING_20240425/00_FINAL_CODE/03_NGINX_PROXY_PORT/nginx/nginx.conf)
 
 
 

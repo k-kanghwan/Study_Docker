@@ -112,6 +112,56 @@
       - [Proxy 서버란?](#proxy-서버란)
       - [Reverse Proxy 란?](#reverse-proxy-란)
     - [nginx reverse proxy 테스트1: 포트로 구분](#nginx-reverse-proxy-테스트1-포트로-구분)
+    - [nginx reverse proxy 테스트2: 경로로 구분](#nginx-reverse-proxy-테스트2-경로로-구분)
+    - [nginx reverse proxy 테스트3: 경로로 구분(내부 서버에 요청하는 경로 변경하기)](#nginx-reverse-proxy-테스트3-경로로-구분내부-서버에-요청하는-경로-변경하기)
+      - [rewrite 지시어 사용법](#rewrite-지시어-사용법)
+    - [참고 - nginx 설정](#참고---nginx-설정)
+      - [에러페이지 설정](#에러페이지-설정)
+      - [캐쉬 설정](#캐쉬-설정)
+  - [Section13. 클론코딩 - 실제 서비스 구축하기](#section13-클론코딩---실제-서비스-구축하기)
+    - [워드프레스란?](#워드프레스란)
+    - [워드프레스 설치방법](#워드프레스-설치방법)
+    - [워드프레스 도커파일 작성하기](#워드프레스-도커파일-작성하기)
+  - [Section14. HTTPS 지원 중급레벨 서비스 구축하기](#section14-https-지원-중급레벨-서비스-구축하기)
+    - [HTTPS 지원](#https-지원)
+      - [사전준비](#사전준비)
+      - [certbot 와 nginx 기본 설정](#certbot-와-nginx-기본-설정)
+
+
+<style>
+    .hl { background-color: #acd3f0ff; padding: 1px 6px; border-radius: 3px; color: #000000; }
+    .hl-title { background-color: #acd3f0ff; padding: 3px 6px; border-radius: 10px; color: #000000; }
+    .hl-yellow { background-color: #FFF2CC; padding: 1px 6px; border-radius: 3px; }
+    .hl-blue { background-color: #CCE5FF; padding: 1px 6px; border-radius: 3px; }
+    .hl-green { background-color: #D5E8D4; padding: 1px 6px; border-radius: 3px; }
+    .hl-pink { background-color: #FFE6E6; padding: 1px 6px; border-radius: 3px; }
+    code { background-color: #f5f5f5; padding: 2px 4px; border-radius: 3px; }
+    
+    /* 헤더 넘버링 */
+    body { counter-reset: h2; }
+    h2 { counter-reset: h3; counter-increment: h2; }
+    h3 { counter-reset: h4; counter-increment: h3; }
+    h4 { counter-reset: h5; counter-increment: h4; }
+    h5 { counter-reset: h6; counter-increment: h5; }
+    h6 { counter-increment: h6; }
+    
+    h2:before { content: counter(h2) ". "; }
+    h3:before { content: counter(h2) "." counter(h3) ". "; }
+    h4:before { content: counter(h2) "." counter(h3) "." counter(h4) ". "; }
+    h5:before { content: counter(h2) "." counter(h3) "." counter(h4) "." counter(h5) ". "; }
+    h6:before { content: counter(h2) "." counter(h3) "." counter(h4) "." counter(h5) "." counter(h6) ". "; }
+    
+    /* Table of Contents에는 넘버링 제외 */
+    h2:first-of-type:before { content: ""; }
+    h2:first-of-type { counter-increment: none; }
+    
+    /* Table of Contents 하위 항목들도 넘버링 제외 */
+    h2:first-of-type ~ ul h3:before,
+    h2:first-of-type ~ ul h4:before,
+    h2:first-of-type ~ ul h5:before,
+    h2:first-of-type ~ ul h6:before { content: ""; }
+
+</style>
 
 ---
 ## Section1. 도커 강의 소개
@@ -1136,6 +1186,8 @@ find -name nginx.conf
 #### Proxy 서버란?
 - 클라이언트와 서버 사이에 중개자 역할을 하는 서버
 - 클라이언트의 요청을 받아, 실제 서버에 전달하고, 서버의 응답을 클라이언트에게 전달
+- <span class='hl'>네트워크 접근 제어나 캐싱, 보안 등 다양한 역할 수행</span> - 직접 연결이 아닌 중개를 통한 이점
+- <span class='hl'>트래픽을 효율적으로 나누고 관리</span>
 
 #### Reverse Proxy 란?
 - 클라이언트가 직접 서버에 접근하지 않고, 프록시 서버를 통해 서버에 접근하는 방식
@@ -1146,6 +1198,94 @@ find -name nginx.conf
 > - [x] [docker-compose.yml](DOCKER_FUNCODING_20240425/00_FINAL_CODE/03_NGINX_PROXY_PORT/docker-compose.yml)
 > - [x] [nginx.conf](DOCKER_FUNCODING_20240425/00_FINAL_CODE/03_NGINX_PROXY_PORT/nginx/nginx.conf)
 
+### nginx reverse proxy 테스트2: 경로로 구분
+> 📂 Folder
+> - [x] [docker-compose.yml](DOCKER_FUNCODING_20240425/00_FINAL_CODE/04_NGINX_PROXY_PATH/docker-compose.yml)
+> - [x] [nginx.conf](DOCKER_FUNCODING_20240425/00_FINAL_CODE/04_NGINX_PROXY_PATH/nginx/nginx.conf)
+
+### nginx reverse proxy 테스트3: 경로로 구분(내부 서버에 요청하는 경로 변경하기)
+> 📂 Folder
+> - [x] [docker-compose.yml](DOCKER_FUNCODING_20240425/00_FINAL_CODE/05_NGINX_PROXY_CH_PATH/docker-compose.yml)
+> - [x] [nginx.conf](DOCKER_FUNCODING_20240425/00_FINAL_CODE/05_NGINX_PROXY_CH_PATH/nginx/nginx.conf)
+
+#### rewrite 지시어 사용법 
+- `rewrite <정규표현식> <대체문자열> [옵션];`
+    - `<정규표현식>`: 매칭할 URL 패턴
+    - `<대체문자열>`: 매칭된 URL을 대체할 문자열
+        - `$1`: `(.*)`와 같은 정규표현식에서 캡처된 그룹 참조
+    - `[옵션]`: 재작성 동작을 제어하는 옵션 (예: `last`, `break`, `redirect`, `permanent`)
+
+``` nginx
+# nginx.conf 예시
+location /service1/ {
+    rewrite ^/service1/(.*)$ /$1 break;
+    proxy_pass http://service1:5000/;
+}
+```
+
+### 참고 - nginx 설정 
+#### 에러페이지 설정 
+``` nginx
+error_page 404 /404.html;
+location = /404.html {
+    root /usr/share/nginx/html;
+    internal;
+}
+```
+
+#### 캐쉬 설정 
+``` nginx
+location ~* \.(jpg|jpeg|png|gif|ico|css|js)$ {
+    expires 30d;
+    add_header Cache-Control "public, no-transform";
+}
+```
+
+## Section13. 클론코딩 - 실제 서비스 구축하기
+> 📕 PDF
+> - [x] [07_actual_practice_nginx_wordpress.pdf](https://drive.google.com/file/d/1twnNfd1aLchzMbFkTBqf9OWuzxoH44PO/view?usp=drive_link "07_actual_practice_nginx_wordpress.pdf")
+
+
+### 워드프레스란?
+- 워드프레스(WordPress)는 오픈 소스 기반의 콘텐츠 관리 시스템(CMS)으로, 블로그, 웹사이트, 온라인 스토어 등 다양한 유형의 웹사이트를 쉽게 구축하고 관리할 수 있도록 도와주는 플랫폼 
+- 사용자 친화적인 인터페이스와 다양한 플러그인, 테마를 통해 웹사이트의 기능과 디자인을 손쉽게 확장 가능
+
+### 워드프레스 설치방법 
+> 📂 Folder
+> - [x] [nginx.conf](DOCKER_FUNCODING_20240425/00_FINAL_CODE/06_WORDPRESS_NGINX_PROXY/nginx/nginx.conf)
+
+1. docker container 실행 
+2. 워드프레스 설치 마법사 접속 
+    - `http://{호스트IP or 도메인}/wp-admin/install.php`
+3. 사이트 정보 입력 및 관리자 계정 생성
+
+    <p style="text-align: left;">
+        <img width="400" height="" src="img/wordpress-install.png">
+    </p>
+
+### 워드프레스 도커파일 작성하기
+> 📂 Folder
+> - [x] [nginx.conf / docker-compose.yml](DOCKER_FUNCODING_20240425/00_FINAL_CODE/07_WORDPRESS_COMPLETE)
+
+
+## Section14. HTTPS 지원 중급레벨 서비스 구축하기
+> 📕 PDF
+> - [x] [08_actual_practice_https.pdf](https://drive.google.com/file/d/1nmd7-eVyQkGPWSvmdD-uJ3vgSEDeqYJ3/view?usp=sharing "08_actual_practice_https.pdf")
+
+### HTTPS 지원
+- HTTPS(HyperText Transfer Protocol Secure)는 웹 브라우저와 웹 서버 간의 통신을 암호화하여 보안을 강화한 프로토콜 
+- 인증서는 보통 연단위 비용이 청구됨
+
+#### 사전준비
+1. 도메인 구입 및 DNS 레코드 설정:
+    - 자신의 EC2 IP를 도메인에 연결
+    - 도메인 구입처: [가비아](https://www.gabia.com/), 카페24, 호스팅케이알 등 
+2. AWS Free Tier EC2 인스턴스 생성
+3. AWS EC2 서버 구축 및 고정 IP(탄력적 IP) 연결
+    - ubuntu 20.04 LTS 
+4. 도메인 DNS 설정
+
+#### certbot 와 nginx 기본 설정
 
 
 
@@ -1153,42 +1293,9 @@ find -name nginx.conf
 <br>
 <br>
 <br>
+
+--- 
 
 [⬆️ 맨 위로 이동](#docker-)
 
 ---
-
-<style>
-    .hl { background-color: #acd3f0ff; padding: 1px 6px; border-radius: 3px; color: #000000; }
-    .hl-title { background-color: #acd3f0ff; padding: 3px 6px; border-radius: 10px; color: #000000; }
-    .hl-yellow { background-color: #FFF2CC; padding: 1px 6px; border-radius: 3px; }
-    .hl-blue { background-color: #CCE5FF; padding: 1px 6px; border-radius: 3px; }
-    .hl-green { background-color: #D5E8D4; padding: 1px 6px; border-radius: 3px; }
-    .hl-pink { background-color: #FFE6E6; padding: 1px 6px; border-radius: 3px; }
-    code { background-color: #f5f5f5; padding: 2px 4px; border-radius: 3px; }
-    
-    /* 헤더 넘버링 */
-    body { counter-reset: h2; }
-    h2 { counter-reset: h3; counter-increment: h2; }
-    h3 { counter-reset: h4; counter-increment: h3; }
-    h4 { counter-reset: h5; counter-increment: h4; }
-    h5 { counter-reset: h6; counter-increment: h5; }
-    h6 { counter-increment: h6; }
-    
-    h2:before { content: counter(h2) ". "; }
-    h3:before { content: counter(h2) "." counter(h3) ". "; }
-    h4:before { content: counter(h2) "." counter(h3) "." counter(h4) ". "; }
-    h5:before { content: counter(h2) "." counter(h3) "." counter(h4) "." counter(h5) ". "; }
-    h6:before { content: counter(h2) "." counter(h3) "." counter(h4) "." counter(h5) "." counter(h6) ". "; }
-    
-    /* Table of Contents에는 넘버링 제외 */
-    h2:first-of-type:before { content: ""; }
-    h2:first-of-type { counter-increment: none; }
-    
-    /* Table of Contents 하위 항목들도 넘버링 제외 */
-    h2:first-of-type ~ ul h3:before,
-    h2:first-of-type ~ ul h4:before,
-    h2:first-of-type ~ ul h5:before,
-    h2:first-of-type ~ ul h6:before { content: ""; }
-
-</style>

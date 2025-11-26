@@ -4,3 +4,4 @@ KeyPair/
 __pycache__/
 
 test/
+certbot-etc/

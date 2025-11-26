@@ -1,3 +1,12 @@
+- 쓰지 않는 컨테이너 및 네트워크 삭제
+```bash
+docker stop $(docker ps -a -q)
+docker rm $(docker ps -a -q)
+docker rmi $(docker images -q)
+docker system prune -a --volumes
+```
+
+
 - 특정 포트로 컨테이너 실행
 
 ```bash

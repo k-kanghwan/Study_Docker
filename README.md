@@ -1,4 +1,7 @@
 # Docker 🐳
+
+- 구입한 도메인: [www.owllab.it.kr](http://www.owllab.it.kr "Go to url")
+
 > version info  
 > ubuntu 24.04.3 LTS  
 > docker 28.4.0  
@@ -126,6 +129,9 @@
     - [HTTPS 지원](#https-지원)
       - [사전준비](#사전준비)
       - [certbot 와 nginx 기본 설정](#certbot-와-nginx-기본-설정)
+      - [인증서 발급 확인](#인증서-발급-확인)
+      - [HTTPS로 영구적 리다이렉트 설정](#https로-영구적-리다이렉트-설정)
+      - [nginx.conf 수정 예시](#nginxconf-수정-예시)
 
 
 <style>
@@ -1275,18 +1281,68 @@ location ~* \.(jpg|jpeg|png|gif|ico|css|js)$ {
 ### HTTPS 지원
 - HTTPS(HyperText Transfer Protocol Secure)는 웹 브라우저와 웹 서버 간의 통신을 암호화하여 보안을 강화한 프로토콜 
 - 인증서는 보통 연단위 비용이 청구됨
+- <span class='hl'>https 를 테스트 하려면 *443* 포트가 열려 있어야 함</span>
+    <!-- image 테두리 추가 -->
+    <p style="text-align:left;">
+        <img width="700" border="2" height="" src="img/443port.png">
+    </p>
+
+    
 
 #### 사전준비
 1. 도메인 구입 및 DNS 레코드 설정:
     - 자신의 EC2 IP를 도메인에 연결
-    - 도메인 구입처: [가비아](https://www.gabia.com/), 카페24, 호스팅케이알 등 
+    - 도메인 구입처: [⭐️가비아](https://www.gabia.com/), 카페24, 호스팅케이알 등 
+    - 구입한 도메인: `www.owllab.it.kr`
 2. AWS Free Tier EC2 인스턴스 생성
 3. AWS EC2 서버 구축 및 고정 IP(탄력적 IP) 연결
     - ubuntu 20.04 LTS 
 4. 도메인 DNS 설정
+    <p style="text-align: center;">
+        <img width="1000" height="" src="img/DNS-Setting.png">
+    </p>
 
 #### certbot 와 nginx 기본 설정
+1. certonly 옵션 이해 
+    <p style="text-align: left;">
+        <img width="700" height="" src="img/certonly.png">
+    </p>
 
+    - `--dry-run`: 실제 인증서 발급 없이 테스트 모드로 실행 
+    - `--webroot`: 웹 서버의 루트 디렉토리를 지정하여 도메인 소유권을 검증 
+    - `--webroot-path`: 인증 정보를 넣을 내 서버의 기본 폴더 지정
+    - `--email`: 인증서 관련 알림을 받을 이메일 주소 지정 
+    - `--agree-tos`: ACME 서버 구독 동의
+    - `--no-eff-email`: EFF(전자 프런티어 재단)로 이메일 공유 거부 
+    - `--keep-until-expiring`: 기존 인증서가 만료되기 전까지는 새 인증서를 발급하지 않음
+
+#### 인증서 발급 확인
+> 📂 Folder
+> - [x] [nginx.conf / docker-compose.yml](DOCKER_FUNCODING_20240425/00_FINAL_CODE/08_HTTPS_PROXY)
+
+```bash
+docker-compose up -d
+docker logs certbot
+```
+
+**<u>Output</u>**
+```bash
+ - dry run was successful! <- 확인
+```
+
+#### HTTPS로 영구적 리다이렉트 설정
+- nginx.conf 파일 수정
+- `return 301 https://$host$request_uri;` 추가
+
+#### nginx.conf 수정 예시
+```nginx
+server{
+   ssl_certificate /etc/letsencrypt/live/owllab.it.kr/fullchain.pem;
+        ssl_certificate_key /etc/letsencrypt/live/owllab.it.kr/privkey.pem;
+        include /etc/letsencrypt/options-ssl-nginx.conf; # 보안 강화를 위한 옵션 추가
+        ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem;   # 보안 강화를 위한 옵션 추가
+}
+```
 
 
 <br>

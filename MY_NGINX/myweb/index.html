@@ -1,1 +1,309 @@
-INDEX.HTML
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <title>owllab</title>
+    <meta name="description" content="KangHwan's Portfolio" />
+    <meta name="keywords" content="KangHwan, Portfolio, Web Developer" />
+    <meta name="author" content="KangHwan" />
+
+    <meta
+      name="viewport"
+      content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
+    />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+
+    <!-- Open Graph(Facebook, Linkedin) -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="KK의 포트폴리오" />
+    <meta property="og:description" content="KK의 첫 번째 웹사이트" />
+    <meta property="og:image" content="img/kanghwan-mark.png" />
+    <meta property="og:url" content="https://kanghwan.dev" />
+    <meta property="og:site_name" content="KK의 포트폴리오" />
+
+    <!-- twitter card (Twitter) -->
+    <meta name="twitter:card" content="summary" />
+    <!-- card 종류 : summary, photo, player -->
+    <meta name="twitter:title" content="KK의 포트폴리오" />
+    <meta name="twitter:description" content="KK의 첫 번째 웹사이트" />
+    <meta name="twitter:image" content="img/kanghwan-mark.png" />
+
+    <!-- 일반적인 favicon 설정 -->
+    <link rel="icon" href="img/favicon.ico" />
+    <!-- 아이폰용 favicon 설정 -->
+    <link rel="apple-touch-icon" href="img/favicon.ico" />
+    <!-- 인터넷 익스플로러용 favicon 설정 -->
+    <link rel="shortcut icon" type="image/x-icon" href="img/favicon.ico" />
+
+    <!-- CSS Reset -->
+    <link rel="stylesheet" href="css/normalize.css" />
+    <!-- https://fontawesome.com/start -->
+    <script
+      src="https://kit.fontawesome.com/726dd248ec.js"
+      crossorigin="anonymous"
+    ></script>
+    <link
+      href="//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSansNeo.css"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <header>
+      <div class="inner">
+        <div class="head-container">
+          <div class="head-brand">
+            <a href="https://github.com/k-kanghwan" target="_blank">owllab</a>
+          </div>
+          <div class="head-email">
+            <a href="mailto:kanghwan.cha@icloud.com">kanghwan.cha@icloud.com</a>
+          </div>
+        </div>
+      </div>
+    </header>
+    <!-- 메인 이미지 섹션 -->
+    <section class="main">
+      <div class="main-container">
+        <div class="inner">
+          <div class="title-container">
+            <div class="title">안녕하세요, owllab 입니다.</div>
+            <div class="message">
+              <div class="message-text">
+                <p>우리는 새로운 기술을 배우는 것을 즐깁니다.</p>
+                <p>
+                  <u>PYTHON, SQL, HTML, CSS, JAVASCRIPT</u> 등을 이용하여 웹을
+                  개발하고,
+                </p>
+                <p>새로운 기술을 통해 문제를 해결하는 것을 좋아합니다.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section>
+      <div class="inner">
+        <div class="skill-container">
+          <div class="skill">
+            <i class="fa-brands fa-python skill-icon python-style"></i>
+            <div class="skill-title">
+              <div class="skill-name">Python</div>
+              <li class="skill-usage">Data Analysis</li>
+              <li class="skill-usage">Machine Learning</li>
+              <li class="skill-usage">back-end / front-end</li>
+            </div>
+          </div>
+          <div class="skill">
+            <i class="fa-solid fa-database skill-icon database-style"></i>
+            <div class="skill-title">
+              <div class="skill-name">Database</div>
+              <li class="skill-usage">MySQL</li>
+              <li class="skill-usage">Mongo DB</li>
+              <li class="skill-usage">DB 구축</li>
+            </div>
+          </div>
+          <div class="skill">
+            <i class="fa-solid fa-globe skill-icon globe-style"></i>
+            <div class="skill-title">
+              <div class="skill-name">Web</div>
+              <li class="skill-usage">Flask / FastAPI</li>
+              <li class="skill-usage">HTML / CSS / Javascript</li>
+              <li class="skill-usage">반응형 웹사이트 만들기</li>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section>
+      <div class="inner">
+        <div class="roadmap-container">
+          <div class="roadmap-title-container">
+            <div class="roadmap-title">
+              프로젝트
+              <!-- <span class="roadmap-desc"
+                >(살면서 힘든게 있으면 코딩하면서 풀어나가기)</span
+              > -->
+            </div>
+            <div class="arrow-container">
+              <i class="fa-solid fa-circle-chevron-left slide-prev"></i>
+              <i class="fa-solid fa-circle-chevron-right slide-next"></i>
+            </div>
+          </div>
+          <!-- HTML5에서는 data-변수이름 -->
+          <ul class="class-list" data-position="0">
+            <li class="class-card">
+              <img
+                src="https://cdn.pixabay.com/photo/2021/12/29/02/10/idea-6900632_640.png"
+                alt="project1"
+                class="class-image"
+              />
+              <a href="https://www.example.com" target="_blank">
+                <div class="class-container">
+                  <div class="class-skill">
+                    <div class="class-type">HWPX</div>
+                    <div class="class-format">Python</div>
+                  </div>
+                  <div class="class-desc">
+                    <div class="class-title">hwpx 문서 안에 내용을 크롤링</div>
+                    <div class="class-detail">
+                      HWPX 문서 자동화 및 데이터 분석
+                    </div>
+                  </div>
+                </div>
+              </a>
+            </li>
+            <li class="class-card">
+              <img
+                src="https://cdn.pixabay.com/photo/2021/12/29/02/10/idea-6900632_640.png"
+                alt="project1"
+                class="class-image"
+              />
+              <a href="https://www.example.com" target="_blank">
+                <div class="class-container">
+                  <div class="class-skill">
+                    <div class="class-type">AutoCAD</div>
+                    <div class="class-format">Python, VBA</div>
+                  </div>
+                  <div class="class-desc">
+                    <div class="class-title">캐드 생성, 드로잉 자동화</div>
+                    <div class="class-detail">
+                      도면 부품목록 및 도면정보 추출
+                    </div>
+                  </div>
+                </div>
+              </a>
+            </li>
+            <li class="class-card">
+              <img
+                src="https://cdn.pixabay.com/photo/2021/12/29/02/10/idea-6900632_640.png"
+                alt="project1"
+                class="class-image"
+              />
+              <a href="https://www.example.com" target="_blank">
+                <div class="class-container">
+                  <div class="class-skill">
+                    <div class="class-type">한컴오피스</div>
+                    <div class="class-format">Python</div>
+                  </div>
+                  <div class="class-desc">
+                    <div class="class-title">폼에 맞추어 문서 자동생성</div>
+                    <div class="class-detail">문서 생성 자동화</div>
+                  </div>
+                </div>
+              </a>
+            </li>
+            <li class="class-card">
+              <img
+                src="https://cdn.pixabay.com/photo/2021/12/29/02/10/idea-6900632_640.png"
+                alt="project1"
+                class="class-image"
+              />
+              <a href="https://www.example.com" target="_blank">
+                <div class="class-container">
+                  <div class="class-skill">
+                    <div class="class-type">앱(app)</div>
+                    <div class="class-format">Flutter</div>
+                  </div>
+                  <div class="class-desc">
+                    <div class="class-title">출퇴근 관리앱</div>
+                    <div class="class-detail">출퇴근 기록 앱</div>
+                  </div>
+                </div>
+              </a>
+            </li>
+            <li class="class-card">
+              <img
+                src="https://cdn.pixabay.com/photo/2021/12/29/02/10/idea-6900632_640.png"
+                alt="project1"
+                class="class-image"
+              />
+              <a href="https://www.example.com" target="_blank">
+                <div class="class-container">
+                  <div class="class-skill">
+                    <div class="class-type">웹(web)</div>
+                    <div class="class-format">JS, HTML, CSS</div>
+                  </div>
+                  <div class="class-desc">
+                    <div class="class-title">웹페이지 제작</div>
+                    <div class="class-detail">
+                      JS, HTML, CSS를 이용한 반응형 웹사이트 제작
+                    </div>
+                  </div>
+                </div>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+    <section>
+      <div class="inner">
+        <div class="roadmap-container">
+          <div class="roadmap-title-container">
+            <div class="roadmap-title">Certification</div>
+            <div class="arrow-container">
+              <i class="fa-solid fa-circle-chevron-left slide-prev"></i>
+              <i class="fa-solid fa-circle-chevron-right slide-next"></i>
+            </div>
+          </div>
+          <ul class="class-list" data-position="0">
+            <li class="class-card">
+              <img
+                src="https://marketplace.canva.com/EAFlVDzb7sA/3/0/1600w/canva-white-gold-elegant-modern-certificate-of-participation-Qn4Rei141MM.jpg"
+                alt="project1"
+                class="class-image"
+              />
+              <div class="class-container">
+                <div class="class-skill">
+                  <div class="class-type">빅데이터 분석기사</div>
+                  <div class="class-format">자격증</div>
+                </div>
+                <div class="class-desc">
+                  <div class="class-title">Pandas, Numpy, Scikit-learn</div>
+                  <div class="class-detail">
+                    데이터 분석 및 머신러닝 기술을 활용하여 데이터를 분석하고
+                    예측 모델을 개발하는 능력을 평가하는 자격증입니다.
+                  </div>
+                </div>
+              </div>
+            </li>
+            <!-- <li class="class-card">
+              <img
+                src="https://marketplace.canva.com/EAFlVDzb7sA/3/0/1600w/canva-white-gold-elegant-modern-certificate-of-participation-Qn4Rei141MM.jpg"
+                alt="project1"
+                class="class-image"
+              />
+              <div class="class-container">
+                <div class="class-skill">
+                  <div class="class-type">빅데이터 분석기사</div>
+                  <div class="class-format">자격증</div>
+                </div>
+                <div class="class-desc">
+                  <div class="class-title">Pandas, Numpy, Scikit-learn</div>
+                  <div class="class-detail">
+                    데이터 분석 및 머신러닝 기술을 활용하여 데이터를 분석하고
+                    예측 모델을 개발하는 능력을 평가하는 자격증입니다.
+                  </div>
+                </div>
+              </div>
+            </li> -->
+          </ul>
+        </div>
+      </div>
+    </section>
+    <footer>
+      <div class="inner">
+        <div class="footer-message">
+          날이 새로워 지려거든 하루하루를 새롭게하고 또 매일매일을
+          새롭게하라(일신우일신)
+        </div>
+        <div class="footer-contact">kanghwan.cha@icloud.com</div>
+        <div class="footer-copyright">Copyright © 2025 Kanghwan Cha</div>
+      </div>
+    </footer>
+    <a id="backtotop" class="show"></a>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.24.0/babel.js"></script>
+    <script type="text/babel" src="js/main.js"></script>
+  </body>
+</html>

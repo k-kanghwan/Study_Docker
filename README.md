@@ -132,6 +132,7 @@
       - [인증서 발급 확인](#인증서-발급-확인)
       - [HTTPS로 영구적 리다이렉트 설정](#https로-영구적-리다이렉트-설정)
       - [nginx.conf 수정 예시](#nginxconf-수정-예시)
+      - [인증서 갱신(feat. crontab)⭐️](#인증서-갱신feat-crontab️)
 
 
 <style>
@@ -1344,6 +1345,35 @@ server{
 }
 ```
 
+#### 인증서 갱신(feat. crontab)⭐️
+> 📕 PDF
+> - [x] [09_actual_practice_crontab.pdf](https://drive.google.com/file/d/1oALwcnQt2uUpns3seiv94i7eB9zJbOl_/view?usp=drive_link "09_actual_practice_crontab.pdf")
+
+- 인증서 유효기간: 90일
+- certbot 자동 갱신 명령어(30일에 한 번 강제 실행)
+- `--dry-run` 옵션으로 테스트 후 실제 갱신
+
+1. command에 `--force-renewal` 옵션 추가
+    ```bash
+        command: certonly --webroot --webroot-path=/usr/share/nginx/html --email 
+                star3kis@gmail.com --agree-tos --no-eff-email --keep-until-expiring -d 
+                owllab.it.kr -d www.owllab.it.kr --force-renewal
+    ```
+
+2. crontab 설정
+    - `*          *           *           *          *`    command to be executed
+    - `분(0-59) 시(0-23) 일(1-31) 월(1-12) 요일(0-7, 0과 7은 일요일)`
+    ```bash
+    PATH=/usr/local/bin 
+
+    # 매달 2일 0시 0분에 한번 실행 
+    0 0 2 * * docker-compose -f /home/ubuntu/09_HTTPS_NGINX/docker-compose.yml restart certbot >> /home/ubuntu/09_HTTPS_NGINX/cron.log 2>&1 
+    ```
+
+    1. `crontab -e`: 크론탭 편집기 열기
+    2. 위 명령어 추가
+    3. 저장 후 종료
+    4. `crontab -l`: 설정된 크론탭 확인
 
 <br>
 <br>

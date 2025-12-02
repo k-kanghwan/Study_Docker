@@ -133,6 +133,10 @@
       - [HTTPS로 영구적 리다이렉트 설정](#https로-영구적-리다이렉트-설정)
       - [nginx.conf 수정 예시](#nginxconf-수정-예시)
       - [인증서 갱신(feat. crontab)⭐️](#인증서-갱신feat-crontab️)
+  - [Section15. 7개 도커로 중급레벨 서비스 구축하기](#section15-7개-도커로-중급레벨-서비스-구축하기)
+    - [flask 백엔드 지원](#flask-백엔드-지원)
+      - [Web Server와 WSGI(Web Server Gateway Interface)](#web-server와-wsgiweb-server-gateway-interface)
+      - [Flask + Docker 테스트](#flask--docker-테스트)
 
 
 <style>
@@ -1374,6 +1378,97 @@ server{
     2. 위 명령어 추가
     3. 저장 후 종료
     4. `crontab -l`: 설정된 크론탭 확인
+
+## Section15. 7개 도커로 중급레벨 서비스 구축하기
+> 📕 PDF
+> - [x] [10_actual_practice_flask.pdf](https://drive.google.com/file/d/13htUBqzIon1TQJjcMBy4dQSEp3J9r-NF/view?usp=drive_link "10_actual_practice_flask.pdf")
+
+### flask 백엔드 지원
+#### Web Server와 WSGI(Web Server Gateway Interface)
+1. WAS 프레임워크
+    - 웹 애플리케이션 서버(Web Application Server)의 약자
+    - <span class='hl'>동적 웹 콘텐츠를 생성</span>하고 제공하는 역할
+    - 예: Django, Flask, Ruby on Rails 등
+
+2. WSGI 
+    - <span class='hl'>Python 웹 애플리케이션과 웹 서버 간의 인터페이스</span> 표준
+    - 웹 서버와 Python 애플리케이션 간의 통신을 중재
+    - 예: Gunicorn, uWSGI 등
+
+3. Middleware 
+    - 웹 서버와 애플리케이션 간의 중간 계층
+    - 요청과 응답을 처리하고, 추가 기능(로깅, 인증 등)을 제공
+    - 주요 Middleware
+        - mod_wsgi: Apache용 WSGI 모듈
+        - uwsgi: C언어로 작성된 WSGI 서버
+        - <span class='hl'>gunicorn</span>: python 언어로 작성된 WSGI Middleware
+
+#### Flask + Docker 테스트
+
+1. Dockerfile 
+    ```bash
+    FROM python:3.9-alpine  # 경량화된 파이썬 이미지 사용
+
+    WORKDIR usr/src/flask_app  # 작업 디렉토리 설정
+    COPY requirements.txt ./  # 필요한 패키지 목록 복사
+    RUN pip install -r requirements.txt  # 패키지 설치
+    COPY ./falsk_app ./  # 애플리케이션 코드 복사
+    ```
+
+2. requirements.txt 
+    ```
+    flask
+    gunicorn 
+    ```
+
+3. 파이썬 코드 
+    **<u>wsgi.py</u>**
+    ```python
+    from app import server 
+
+    if __name__ == "__main__":
+        server.run(host='0.0.0.0', port=80)
+    ```
+
+    **<u>app.py</u>**
+    ```python
+    from flask import Flask
+
+    server = Flask(__name__)
+
+    @server.route("/search")
+    def hello_world():
+        return "Hello, Flask with Docker!"
+    ```
+
+4. docker-compose.yml 추가
+    ```yaml
+    flask:
+        build: ./flask_docker
+        restart: always
+        container_name: myflask
+        command: gunicorn -w 1 -b 0.0.0.0:80 wsgi:server  # wsgi.py의 server 객체 사용
+    ```
+    > 참고 gunicorn worker 갯수: (CPU 코어 수 x 2) + 1 권장
+
+5. reverse proxy 설정 추가
+    ```nginx
+    location /flask/ {
+        rewrite ^/flask/(.*)$ /$1 break;
+        proxy_pass http://flask:80/;
+    }
+    ```    
+
+6. 도커 컴포즈 실행
+    ```bash
+    docker-compose up -d
+    ```
+
+7. flask 코드 변경시, 반영
+    ```bash
+    docker-compose up -d --build
+    ```
+
 
 <br>
 <br>

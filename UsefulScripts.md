@@ -6,6 +6,11 @@ docker rmi $(docker images -q)
 docker system prune -a --volumes
 ```
 
+- backend server 코드 수정 후, 반영
+```bash
+docker-compose up -d --force-recreate --no-deps --build flask
+```
+
 
 - 특정 포트로 컨테이너 실행
 

@@ -1,6 +1,7 @@
 # Docker 🐳
 
-- 구입한 도메인: [www.owllab.it.kr](http://www.owllab.it.kr "Go to url")
+- 구입한 도메인: [www.owllab.it.kr](https://www.owllab.it.kr "Go to url")
+- AWS EC2 서버 IP:[43.201.229.172](http://43.201.229.172 "Go to url")
 
 > version info  
 > ubuntu 24.04.3 LTS  
@@ -137,6 +138,12 @@
     - [flask 백엔드 지원](#flask-백엔드-지원)
       - [Web Server와 WSGI(Web Server Gateway Interface)](#web-server와-wsgiweb-server-gateway-interface)
       - [Flask + Docker 테스트](#flask--docker-테스트)
+    - [PHP와 PHP FPM](#php와-php-fpm)
+      - [PHP FPM 이란?](#php-fpm-이란)
+  - [Section16. 도커 운영 및 DevOps](#section16-도커-운영-및-devops)
+    - [최종 Docker Compose](#최종-docker-compose)
+  - [Section17. FastAPI 도커 환경 구축](#section17-fastapi-도커-환경-구축)
+    - [Reverse Proxy + FastAPI + MySQL 도커컴포즈 구축](#reverse-proxy--fastapi--mysql-도커컴포즈-구축)
 
 
 <style>
@@ -1466,8 +1473,170 @@ server{
 
 7. flask 코드 변경시, 반영
     ```bash
-    docker-compose up -d --build
+    docker-compose up -d --force-recreate --no-deps --build flask
     ```
+
+### PHP와 PHP FPM
+> 📕 PDF
+> - [x] [11_actual_practice_php_fpm.pdf](https://drive.google.com/file/d/1Vp5HuQHe-OqehWoAsI-1pH_FnQCHfeaa/view?usp=sharing "11_actual_practice_php_fpm.pdf")
+
+#### PHP FPM 이란?
+- PHP FastCGI Process Manager의 약자
+- PHP 스크립트를 처리하는 FastCGI 구현체
+
+
+## Section16. 도커 운영 및 DevOps
+> 📕 PDF
+> - [x] [12_operation_and_future.pdf](https://drive.google.com/file/d/1HRNK8d4ebjn1NFvxUKHYC1oqkdmDBYvE/view?usp=sharing "12_operation_and_future.pdf")
+
+### 최종 Docker Compose 
+- 총 7개의 서비스로 구성된 Docker Compose 파일
+    - reverse-proxy (Nginx) 
+    - frontend server (html/css/js) 
+    - backend server (Python Flask, fastAPI) 
+    - blog service (WordPress)
+    - php service (PHP-FPM)
+    - database service (MySQL) 
+    - https support (certbot (Let's Encrypt SSL 인증서 발급))
+    
+    <p style="text-align: center;">
+        <img width="500" height="" src="img/docker-compose-operation.png">
+    </p>
+
+## Section17. FastAPI 도커 환경 구축
+> 📕 PDF
+> - [x] [13_actual_practice_fastapi.pdf](https://drive.google.com/file/d/1hzT4kNcEJ7B_yjgd5gdFXHdF4VzZq_2i/view?usp=sharing "13_actual_practice_fastapi.pdf")
+> 📂 Folder
+> - [x] [14_FASTAPI_MYSQL_NGINX](DOCKER_FUNCODING_20240425/00_FINAL_CODE/14_FASTAPI_MYSQL_NGINX)
+
+### Reverse Proxy + FastAPI + MySQL 도커컴포즈 구축
+
+1. Dockerfile 
+```bash
+FROM python:3.12
+
+WORKDIR /app
+
+COPY ./requirements.txt /app/requirements.txt
+
+RUN pip install --no-cache-dir --upgrade -r /app/requirements.txt
+
+COPY ./main.py /app/main.py
+COPY ./database.py /app/database.py
+
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8080"]
+```
+
+2. requirements.txt 
+```
+fastapi
+uvicorn
+sqlalchemy
+pymysql
+cryptography
+```
+
+3. main.py
+```python
+import time
+from typing import List, Optional
+from fastapi import FastAPI, Depends
+from sqlalchemy.exc import OperationalError
+from sqlalchemy.orm import Session
+from database import engine, Base, SessionLocal, Todo as TodoModel
+from pydantic import BaseModel
+
+class TodoCreate(BaseModel):
+    title: str
+
+class Todo(BaseModel):
+    id: Optional[int] = None
+    title: str
+
+app = FastAPI()
+
+def get_db():
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
+
+retries = 5
+while retries > 0:
+    try:
+        conn = engine.connect()
+        Base.metadata.create_all(bind=engine)
+        break
+    except OperationalError:
+        retries -= 1
+        print(f"Database connection failed. Retries left: {retries}")
+        time.sleep(5)
+
+if retries == 0:
+    raise Exception("Could not connect to the database")
+
+@app.get("/")
+def read_root():
+    return {"Hello": "World"}
+
+@app.post("/todos/", response_model=Todo)
+def create_todo(todo: TodoCreate, db: Session = Depends(get_db)):
+    db_todo = TodoModel(title=todo.title)
+    db.add(db_todo)
+    db.commit()
+    db.refresh(db_todo)
+    return db_todo
+
+@app.get("/todos/", response_model=List[Todo])
+def read_todos(db: Session = Depends(get_db)):
+    todos = db.query(TodoModel).all()
+    return todos
+```
+
+4. database.py
+```python
+from sqlalchemy import create_engine, Column, Integer, String
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import sessionmaker
+
+SQLALCHEMY_DATABASE_URL = "mysql+pymysql://root:password@db:3306/mydb"
+
+engine = create_engine(SQLALCHEMY_DATABASE_URL)
+SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+
+Base = declarative_base()
+
+class Todo(Base):
+    __tablename__ = "todos"
+
+    id = Column(Integer, primary_key=True, index=True)
+    title = Column(String(100), index=True)
+```
+
+5. MySQL 데이터베이스 설정
+    1. init.sql
+    ```sql  
+    CREATE DATABASE IF NOT EXISTS mydb;
+    USE mydb;       
+    CREATE TABLE IF NOT EXISTS todos (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        title VARCHAR(100) NOT NULL
+    );
+    ```
+    2. docker-compose.yml
+    ```yaml
+    db:
+        image: mysql:8.0
+        environment:
+            MYSQL_ROOT_PASSWORD: password
+            MYSQL_DATABASE: mydb
+        volumes:  # init.sql 파일 자동 실행 설정
+        - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    ```
+
+6. Nginx reverse proxy 설정
+> - [x] [nginx.conf](DOCKER_FUNCODING_20240425/00_FINAL_CODE/14_FASTAPI_MYSQL_NGINX/nginx/nginx.conf)
 
 
 <br>
